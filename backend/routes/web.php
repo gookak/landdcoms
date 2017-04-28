@@ -11,12 +11,8 @@
 |
 */
 
-// Route::get('/', function () {
-//     $tasks = App\Tasks::All();
-//     return view('welcome',compact('tasks'));
-//     // return view('welcome');
-// });
+Auth::routes();
 
-Route::get('/', function(){
-    return view('adminlte');
-});
+Route::get('/home', 'HomeController@index');
+
+Route::resource('category', 'CategoryController');
