@@ -16,7 +16,7 @@ class CategoryController extends Controller
     {
         $categorys = Category::orderBy('created_at','desc')->paginate(5);
         // return view('category.index',compact('categorys'));
-        return view('layouts.main',compact('categorys'));
+        return view('category.index',compact('categorys'));
     }
 
     /**
