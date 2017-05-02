@@ -47,11 +47,15 @@ class CategoryController extends Controller
         // dd($request->all());
         // Category::create($request->all());
 
-        Category::create([
-            'name' => $request->input('name'),
-            'detail' => $request->input('detail')
-            ]);
+        try{
+            Category::create([
+                'name' => $request->input('name'),
+                'detail' => $request->input('detail')
+                ]);
+        } catch (\Exception $ex) {
 
+        }
+        
         return redirect('/category');
     }
 
@@ -90,18 +94,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, category $category)  //
     {
-        dd($request->all());
-        // unset($inputs['_token']);
-        // try{
-        //     $category = Category::find($id);
-        //     $category->name = $request->input('name');
-        //     $category->detail = $request->input('detail');
-        //     $category->save();
-        // } 
-        // catch (\Exception $ex) {
+        try{
+            $category->name = $request->input('name');
+            $category->detail = $request->input('detail');
+            $category->save();
+        } catch (\Exception $ex) {
 
-        // }
-
+        }
+        return redirect('/category');
     }
 
     /**
@@ -112,6 +112,13 @@ class CategoryController extends Controller
      */
     public function destroy(category $category)
     {
-        //
+        dd($category);
+        // try{
+        //     $category->delete();
+        // } catch (\Exception $ex) {
+
+        // }
+        // //notify()->flash('Deleted','error',['text' => 'Word Deleted Succesfully']);
+        // return redirect('/category');
     }
 }
