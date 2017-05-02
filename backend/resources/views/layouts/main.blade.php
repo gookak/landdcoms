@@ -5,12 +5,16 @@
   <meta charset="utf-8" />
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 
   <title>Blank Page - Ace Admin</title>
 
   <!-- bootstrap & fontawesome -->
   <link rel="stylesheet" href="{{ asset('themes/ace-master/assets/css/bootstrap.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('themes/ace-master/assets/font-awesome/4.5.0/css/font-awesome.min.css') }}" />
+
+  <!-- bootstrapValidator -->
+  <link rel="stylesheet" href="{{ asset('themes/ace-master/assets/css/bootstrapValidator/bootstrapValidator.min.css') }}" />
 
   <!-- page specific plugin styles -->
 
@@ -22,6 +26,9 @@
 
   <link rel="stylesheet" href="{{ asset('themes/ace-master/assets/css/ace-skins.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('themes/ace-master/assets/css/ace-rtl.min.css') }}" />
+
+  <!-- my styles -->
+  <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
 
   <!-- ace settings handler -->
   <script src="{{ asset('themes/ace-master/assets/js/ace-extra.min.js') }}"></script>
@@ -240,9 +247,16 @@
 <script src="{{ asset('themes/ace-master/assets/js/buttons.colVis.min.js') }}"></script>
 <script src="{{ asset('themes/ace-master/assets/js/dataTables.select.min.js') }}"></script> --}}
 
+<!-- bootstrapValidator -->
+<script src="{{ asset('themes/ace-master/assets/js/bootstrapValidator/bootstrapValidator.min.js') }}"></script>
+<script src="{{ asset('themes/ace-master/assets/js/bootstrapValidator/language/th_TH.js') }}"></script>
+
 <!-- ace scripts -->
 <script src="{{ asset('themes/ace-master/assets/js/ace-elements.min.js') }}"></script>
 <script src="{{ asset('themes/ace-master/assets/js/ace.min.js') }}"></script>
+
+<!-- my scripts -->
+<link rel="stylesheet" href="{{ asset('js/custom.js') }}" />
 
 <!-- inline scripts related to this page -->
 @yield('tag-footer')
