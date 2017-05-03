@@ -14,9 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categorys = Category::orderBy('created_at','desc')->paginate(5);
-        // return view('category.index',compact('categorys'));
-        return view('category.index',compact('categorys'));
+        $categorys = Category::orderBy('updated_at','desc')->get();
+        return view('category.index', compact('categorys'));
     }
 
     /**
@@ -26,7 +25,11 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $category = new Category();
+        $header_text = 'เพิ่มประเภทสินค้า';
+        $mode = 'create';
+        $form_action = '/category';
+        return view('category.form', compact('category', 'header_text', 'mode', 'form_action'));
     }
 
     /**
@@ -37,7 +40,23 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $this->validate($request, [
+        //     'name' => 'required'
+        //     ]);
+
+        // dd($request->all());
+        // Category::create($request->all());
+
+        try{
+            Category::create([
+                'name' => $request->input('name'),
+                'detail' => $request->input('detail')
+                ]);
+        } catch (\Exception $ex) {
+
+        }
+        
+        return redirect('/category');
     }
 
     /**
@@ -59,7 +78,11 @@ class CategoryController extends Controller
      */
     public function edit(category $category)
     {
-        //
+        // dd($category);
+        $header_text = 'แก้ไขประเภทสินค้า';
+        $mode = 'edit';
+        $form_action = '/category/'.$category->id;
+        return view('category.form', compact('category', 'header_text', 'mode', 'form_action'));
     }
 
     /**
@@ -69,9 +92,16 @@ class CategoryController extends Controller
      * @param  \App\category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, category $category)
+    public function update(Request $request, category $category)  //
     {
-        //
+        try{
+            $category->name = $request->input('name');
+            $category->detail = $request->input('detail');
+            $category->save();
+        } catch (\Exception $ex) {
+
+        }
+        return redirect('/category');
     }
 
     /**
@@ -82,6 +112,13 @@ class CategoryController extends Controller
      */
     public function destroy(category $category)
     {
-        //
+        dd($category);
+        // try{
+        //     $category->delete();
+        // } catch (\Exception $ex) {
+
+        // }
+        // //notify()->flash('Deleted','error',['text' => 'Word Deleted Succesfully']);
+        // return redirect('/category');
     }
 }
