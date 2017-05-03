@@ -17,10 +17,10 @@ class CreateCustomerTable extends Migration
             $table->increments('id');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('firstname', 200);
-            $table->string('lastname', 200);
-            $table->string('tel', 100);
-            $table->string('image', 100);
+            $table->string('firstname', 200)->nullable()->comment('ชื่อ');
+            $table->string('lastname', 200)->nullable()->comment('นามสกุล');
+            $table->string('tel', 100)->nullable()->comment('เบอร์ติดต่อ');
+            $table->string('image', 100)->nullable()->comment('รูป');
             $table->timestamps();
         });
     }

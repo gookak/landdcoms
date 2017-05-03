@@ -18,13 +18,13 @@ class CreateOrderTable extends Migration
             $table->integer('customer_id');
             $table->integer('address_id');
             $table->integer('transportstatus_id');
-            $table->string('code', 10);
-            $table->integer('sumnumber');
-            $table->decimal('sumprice', 5, 2);
-            $table->decimal('fee', 5, 2);
-            $table->decimal('promotion', 5, 2);
-            $table->decimal('totalprice', 5, 2);
-            $table->string('emscode', 100);
+            $table->string('code', 10)->comment('เลขที่ใบสั่งซื้อ');
+            $table->integer('sumnumber')->nullable()->comment('รวมจำนวนสินค้าทั้งหมด');
+            $table->decimal('sumprice', 5, 2)->nullable()->comment('รวมราคาสินค้าทั้งหมด');
+            $table->decimal('fee', 5, 2)->nullable()->comment('ค่าธรรมเนียม');
+            $table->decimal('promotion', 5, 2)->nullable()->comment('ส่วนลด');
+            $table->decimal('totalprice', 5, 2)->nullable()->comment('ราคาสุทธิ');
+            $table->string('emscode', 100)->nullable()->comment('รหัสพัสดุ');
             $table->timestamps();
         });
     }
