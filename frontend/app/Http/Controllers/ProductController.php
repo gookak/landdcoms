@@ -14,14 +14,56 @@ class ProductController extends Controller
         // $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request )
     {
+
+        // $search = \Request::get('search');
+        // $search_category = \Request::get('category');
+
         $categorys = Category::all();
-        $products = Product::orderBy('createdate','desc')->paginate(2);
+
+        if ($request->all() != '') {
+            $products = Product::where('name', 'like', '%' . $request->input('name') . '%')
+            ->where('category_id', 'like', '%' . $request->input('category_id') . '%')
+            ->orderBy('createdate','desc')
+            ->paginate(2);
+        }else{
+            $products = Product::orderBy('createdate','desc')->paginate(2);
+        }
+
+
+
+        // $search = $request->input('search');
+        // $search_category = $request->input('category');
+
+
+        // if ($search != '') {
+        //     $products = Product::where('name', 'like', '%' . $search . '%')->orderBy('createdate','desc')->paginate(2);
+        // }elseif($search_category !=''){
+        //     $products = Product::where('category_id', 'like', '%' . $search_category . '%')->orderBy('createdate','desc')->paginate(2);
+        // }else{
+        //     $products = Product::orderBy('createdate','desc')->paginate(2);
+        // }
+        // $categorys = Category::all();
         return view('product.index',compact('products','categorys'));
     }
 
-     public function productDetail($id)
+    public function searchCategory($id)
+    {
+        $categorys = Category::all();
+        $products = Product::where('category_id', 'like', '%' . $id . '%')->orderBy('createdate','desc')->paginate(2);
+        return view('product.index',compact('products','categorys'));
+    }
+
+    // public function search(Request $request)
+    // {
+    //     $search = \Request::get('search');
+    //     $categorys = Category::all();
+    //     $products = Product::where('name', 'like', '%' . $search . '%')->orderBy('createdate','desc')->paginate(2);
+    //     return view('product.index',compact('products','categorys'));
+    // }
+
+    public function productDetail($id)
     {
     	$product = Product::find($id);        
     	return view('product.detail',compact('product'));
