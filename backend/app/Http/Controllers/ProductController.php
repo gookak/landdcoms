@@ -27,7 +27,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $product = new Product();
+        $header_text = 'เพิ่มข้อมูลสินค้า';
+        $mode = 'create';
+        $form_action = '/product';
+        return view('product.form', compact('product', 'header_text', 'mode', 'form_action'));
     }
 
     /**

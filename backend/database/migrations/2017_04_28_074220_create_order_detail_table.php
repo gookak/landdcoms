@@ -18,7 +18,7 @@ class CreateOrderDetailTable extends Migration
             $table->integer('order_id');
             $table->integer('product_id');
             $table->integer('number')->comment('จำนวน');
-            $table->decimal('price', 5, 2)->comment('ราคาต่อชิ้น');
+            $table->decimal('price', 10, 2)->comment('ราคาต่อชิ้น');
             $table->timestamps();
         });
     }

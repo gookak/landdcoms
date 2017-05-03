@@ -17,8 +17,7 @@
         <!-- PAGE CONTENT BEGINS -->
 
         <div class="clearfix">
-            <!--MSG-Error -->
-            @include('layouts.errors')
+            <div id="msgErrorArea"></div>
         </div>
 
         <form id="categoryForm" class="form-horizontal" role="form" action="{{ $form_action }}" method="POST">
