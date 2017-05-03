@@ -4,7 +4,7 @@
 
 <div class="page-header">
     <h1>
-        ประเภทสินค้า
+        ข้อมูลสินค้า
         {{-- <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             Static &amp; Dynamic Tables
@@ -21,7 +21,7 @@
 
         <div class="clearfix">
             <div class="pull-left tableTools-container">
-                <a class="btn btn-sm btn-primary" href="/category/create">
+                <a class="btn btn-sm btn-primary" href="/product/create">
                     <i class="ace-icon fa fa-plus align-top bigger-125"></i>
                     เพิ่ม
                 </a>
@@ -30,29 +30,35 @@
 
         <!-- div.dataTables_borderWrap -->
         <div class="table-responsive">
-            <table id="tb-category" class="table table-striped table-bordered table-hover">
+            <table id="tb-product" class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr>
                         <th></th>
-                        {{-- <th class="center">รหัส</th> --}}
-                        <th>ประเภทสินค้า</th>
+                        <th>รหัสสินค้า</th>
+                        <th>รูป</th>
+                        <th>ชื่อ</th>
+                        <th>ราคาต่อชิ้น</th>
+                        <th>จำนวนคงเหลือ</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($categorys as $category)
+                    @foreach($products as $product)
                     <tr>
                         <td class="center">
                             <div class="btn-group">
-                                <a class="btn btn-xs btn-info" href="/category/{{ $category->id }}/edit" >
+                                <a class="btn btn-xs btn-info" href="/product/{{ $product->id }}/edit" >
                                     <i class="ace-icon fa fa-pencil bigger-120"></i>
                                 </a>
-                                <a class="btn btn-xs btn-danger btn-del" data-id="{{ $category->id }}">
+                                <a class="btn btn-xs btn-danger btn-del" data-id="{{ $product->id }}">
                                     <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                 </a>
                             </div>
-                        </td>
-                        {{-- <td class="center">{{ $category->id }}</td> --}}
-                        <td>{{ $category->name }}</td>
+                        </td>                        
+                        <td>{{ $product->code }}</td>
+                        <td>{{ $product->image }}</td>
+                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->price }}</td>
+                        <td>{{ $product->balance }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -71,13 +77,13 @@
 
         //checkBoxAllMutiTablePerPage("#checkAll", ".check");
 
-        var tb_category = $('#tb-category')
+        var tb_product = $('#tb-product')
                 //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
                 .dataTable({
                     //"bAutoWidth": true,
                     "aoColumns": [
-                    {"bSortable": false, "width": "10%", "targets": 0},
-                    {"width": "90%"}
+                    {"bSortable": false, "targets": 0},
+                    null, null, null, null, null
                     ],
                     "aaSorting": [],
                     //"sScrollY": "200px",
@@ -99,7 +105,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url:'/category/' + id, 
+                    url:'/product/' + id, 
                     type: 'POST',
                     data: { '_method': 'delete'},
                 })

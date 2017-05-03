@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>Blank Page - Ace Admin</title>
 
@@ -54,7 +54,7 @@
         <a href="index.html" class="navbar-brand">
           <small>
             <i class="fa fa-leaf"></i>
-            Ace Admin
+            L&D COMMERCE
           </small>
         </a>
       </div>
@@ -129,6 +129,14 @@
           <a href="/category">
             <i class="menu-icon fa fa-tachometer"></i>
             <span class="menu-text"> ประเภทสินค้า </span>
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+        <li class="">
+          <a href="/product">
+            <i class="menu-icon fa fa-tachometer"></i>
+            <span class="menu-text"> ข้อมูลสินค้า </span>
           </a>
 
           <b class="arrow"></b>
@@ -256,7 +264,7 @@
 <script src="{{ asset('themes/ace-master/assets/js/ace.min.js') }}"></script>
 
 <!-- my scripts -->
-<link rel="stylesheet" href="{{ asset('js/custom.js') }}" />
+<script src="{{ asset('js/custom.js') }}"></script>
 
 <!-- inline scripts related to this page -->
 @yield('tag-footer')
