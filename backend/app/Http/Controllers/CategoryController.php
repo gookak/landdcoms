@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Response;
+use DB;
 
 class CategoryController extends Controller
 {
@@ -40,23 +42,43 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate($request, [
-        //     'name' => 'required'
-        //     ]);
-
-        // dd($request->all());
-        // Category::create($request->all());
-
+        $status = 200;
+        $msgerror = "";
+        DB::beginTransaction();
         try{
-            Category::create([
+            $rs = Category::create([
                 'name' => $request->input('name'),
                 'detail' => $request->input('detail')
                 ]);
         } catch (\Exception $ex) {
-
+            $status = 500;
+            $msgerror = $ex->getMessage();
+            DB::rollback();
         }
+        DB::commit();
+        if ($msgerror == "") {
+            $msgerror = 'บันทึกข้อมูลเรียบร้อย';
+        }
+        $data = ['status' => $status, 'msgerror' => $msgerror, 'rs' => $rs];
+        return Response::json($data);
+
+        // // $this->validate($request, [
+        // //     'name' => 'required'
+        // //     ]);
+
+        // // dd($request->all());
+        // // Category::create($request->all());
+
+        // try{
+        //     Category::create([
+        //         'name' => $request->input('name'),
+        //         'detail' => $request->input('detail')
+        //         ]);
+        // } catch (\Exception $ex) {
+
+        // }
         
-        return redirect('/category');
+        // return redirect('/category');
     }
 
     /**
@@ -94,14 +116,33 @@ class CategoryController extends Controller
      */
     public function update(Request $request, category $category)  //
     {
+        $status = 200;
+        $msgerror = "";
+        DB::beginTransaction();
         try{
-            $category->name = $request->input('name');
+            $rs = $category->name = $request->input('name');
             $category->detail = $request->input('detail');
             $category->save();
         } catch (\Exception $ex) {
-
+            $status = 500;
+            $msgerror = $ex->getMessage();
+            DB::rollback();
         }
-        return redirect('/category');
+        DB::commit();
+        if ($msgerror == "") {
+            $msgerror = 'บันทึกข้อมูลเรียบร้อย';
+        }
+        $data = ['status' => $status, 'msgerror' => $msgerror, 'rs' => $rs];
+        return Response::json($data);
+
+        // try{
+        //     $category->name = $request->input('name');
+        //     $category->detail = $request->input('detail');
+        //     $category->save();
+        // } catch (\Exception $ex) {
+
+        // }
+        // return redirect('/category');
     }
 
     /**
@@ -112,13 +153,21 @@ class CategoryController extends Controller
      */
     public function destroy(category $category)
     {
-        dd($category);
-        // try{
-        //     $category->delete();
-        // } catch (\Exception $ex) {
-
-        // }
-        // //notify()->flash('Deleted','error',['text' => 'Word Deleted Succesfully']);
-        // return redirect('/category');
+        $status = 200;
+        $msgerror = "";
+        DB::beginTransaction();
+        try{
+            $rs = $category->delete();
+        } catch (\Exception $ex) {
+            $status = 500;
+            $msgerror = $ex->getMessage();
+            DB::rollback();
+        }
+        DB::commit();
+        if ($msgerror == "") {
+            $msgerror = 'บันทึกข้อมูลเรียบร้อย';
+        }
+        $data = ['status' => $status, 'msgerror' => $msgerror, 'rs' => $rs];
+        return Response::json($data);
     }
 }

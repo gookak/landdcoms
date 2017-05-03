@@ -5,9 +5,9 @@
   <meta charset="utf-8" />
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>Blank Page - Ace Admin</title>
+  <title>L&D Commerce</title>
 
   <!-- bootstrap & fontawesome -->
   <link rel="stylesheet" href="{{ asset('themes/ace-master/assets/css/bootstrap.min.css') }}" />
@@ -51,10 +51,10 @@
       </button>
 
       <div class="navbar-header pull-left">
-        <a href="index.html" class="navbar-brand">
+        <a href="/" class="navbar-brand">
           <small>
             <i class="fa fa-leaf"></i>
-            Ace Admin
+            L&D COMMERCE
           </small>
         </a>
       </div>
@@ -133,11 +133,43 @@
 
           <b class="arrow"></b>
         </li>
+        <li class="">
+          <a href="/product">
+            <i class="menu-icon fa fa-tachometer"></i>
+            <span class="menu-text"> ข้อมูลสินค้า </span>
+          </a>
 
-        {{-- <li class="">
+          <b class="arrow"></b>
+        </li>
+        <li class="">
+          <a href="/customer">
+            <i class="menu-icon fa fa-tachometer"></i>
+            <span class="menu-text"> ข้อมูลลูกค้า </span>
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+        <li class="">
+          <a href="/order">
+            <i class="menu-icon fa fa-tachometer"></i>
+            <span class="menu-text"> ข้อมูลรายการสั่งซื้อ </span>
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+       {{--  <li class="">
+          <a href="/report">
+            <i class="menu-icon fa fa-tachometer"></i>
+            <span class="menu-text"> รายงาน </span>
+          </a>
+
+          <b class="arrow"></b>
+        </li> --}}
+
+        <li class="">
           <a href="#" class="dropdown-toggle">
             <i class="menu-icon fa fa-list"></i>
-            <span class="menu-text"> Tables </span>
+            <span class="menu-text"> Admin </span>
 
             <b class="arrow fa fa-angle-down"></b>
           </a>
@@ -148,22 +180,22 @@
             <li class="">
               <a href="tables.html">
                 <i class="menu-icon fa fa-caret-right"></i>
-                Simple &amp; Dynamic
+                  ข้อมูลผู้ใช้งาน
               </a>
 
               <b class="arrow"></b>
             </li>
 
-            <li class="">
+            {{-- <li class="">
               <a href="jqgrid.html">
                 <i class="menu-icon fa fa-caret-right"></i>
-                jqGrid plugin
+                logfile
               </a>
 
               <b class="arrow"></b>
-            </li>
+            </li> --}}
           </ul>
-        </li> --}}
+        </li>
 
       </ul><!-- /.nav-list -->
 
@@ -195,11 +227,11 @@
       <div class="footer-inner">
         <div class="footer-content">
           <span class="bigger-120">
-            <span class="blue bolder">Ace</span>
-            Application &copy; 2013-2014
+            <span class="blue bolder">L&D Commerce</span>
+            Application &copy; 2017
           </span>
 
-          &nbsp; &nbsp;
+          {{-- &nbsp; &nbsp;
           <span class="action-buttons">
             <a href="#">
               <i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
@@ -212,7 +244,7 @@
             <a href="#">
               <i class="ace-icon fa fa-rss-square orange bigger-150"></i>
             </a>
-          </span>
+          </span> --}}
         </div>
       </div>
     </div>
@@ -256,7 +288,7 @@
 <script src="{{ asset('themes/ace-master/assets/js/ace.min.js') }}"></script>
 
 <!-- my scripts -->
-<link rel="stylesheet" href="{{ asset('js/custom.js') }}" />
+<script src="{{ asset('js/custom.js') }}"></script>
 
 <!-- inline scripts related to this page -->
 @yield('tag-footer')

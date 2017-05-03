@@ -20,21 +20,49 @@
             <div id="msgErrorArea"></div>
         </div>
 
-        <form id="categoryForm" class="form-horizontal" role="form" action="{{ $form_action }}" method="POST">
+        <form id="productForm" class="form-horizontal" role="form" action="{{ $form_action }}" method="POST">
 
             {{ $mode=='edit'? method_field('PUT') : null }}
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">ชื่อ</label>
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" name="name" placeholder="" value="{{ $category->name }}" />
+                    <input type="text" class="form-control" name="name" placeholder="" value="{{ $product->name }}" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">รูป</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="image" placeholder="" value="{{ $product->image }}" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">ราคาขาย</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="price" placeholder="" value="{{ $product->price }}" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">จำนวน</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="balance" placeholder="" value="{{ $product->balance }}" />
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">คำอธิบาย</label>
                 <div class="col-sm-5">
-                    <textarea class="form-control" rows="5" name="detail" placeholder="">{{ $category->detail }}</textarea>
+                    <textarea class="form-control" rows="5" name="detail" placeholder="">{{ $product->detail }}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Html</label>
+                <div class="col-sm-5">
+                    <textarea class="form-control" rows="5" name="html" placeholder="">{{ $product->html }}</textarea>
                 </div>
             </div>
 
@@ -44,7 +72,7 @@
                         <i class="ace-icon fa fa-check bigger-110"></i>
                         บันทึก
                     </button>
-                    <a class="btn btn-sm btn-default" href="/category">
+                    <a class="btn btn-sm btn-default" href="/product">
                         <i class="ace-icon fa fa-reply bigger-110"></i>
                         ยกเลิก
                     </a>
@@ -62,7 +90,7 @@
 <script type="text/javascript">
     $(function () {
 
-        $('#categoryForm').bootstrapValidator({
+        $('#productForm').bootstrapValidator({
             framework: 'bootstrap',
             fields: {
                 name: {
@@ -91,7 +119,7 @@
             .done(function(result) {
                 console.log(result);
                 if (result.status === 200) {
-                    window.location = "/category";
+                    window.location = "/product";
                 }else {
                     showMsgError("#msgErrorArea", result.msgerror);
                 }
