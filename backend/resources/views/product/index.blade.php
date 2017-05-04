@@ -39,6 +39,7 @@
                         <th>ชื่อ</th>
                         <th>ราคาต่อชิ้น</th>
                         <th>จำนวนคงเหลือ</th>
+                        <th>ประเภทสินค้า</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,6 +60,7 @@
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->balance }}</td>
+                        <td>{{ $product->category->name }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -83,7 +85,7 @@
                     //"bAutoWidth": true,
                     "aoColumns": [
                     {"bSortable": false, "targets": 0},
-                    null, null, null, null, null
+                    null, null, null, null, null, null
                     ],
                     "aaSorting": [],
                     //"sScrollY": "200px",

@@ -22,3 +22,10 @@ Route::get('/', function(){
 Route::resource('category', 'CategoryController');
 
 Route::resource('product', 'ProductController');
+
+
+Route::get('/upload', 'UploadController@uploadForm');
+
+Route::post('/upload', 'UploadController@uploadSubmit');
+
+Route::get('/show', 'UploadController@show');
