@@ -15,8 +15,8 @@ class CreateTransportStatusTable extends Migration
     {
         Schema::create('transport_status', function (Blueprint $table) {
             $table->integer('id');
-            $table->string('name', 200);
-            $table->text('detail');
+            $table->string('name', 200)->comment('ชื่อ');
+            $table->text('detail')->nullable()->comment('รายละเอียด');
             $table->timestamps();
         });
     }
