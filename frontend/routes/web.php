@@ -14,7 +14,13 @@
 
 Route::get('/', 'HomeController@index');
 
-Route::get('/productlist', 'ProductController@index');
+// Route::get('/product', 'ProductController@index');
+
+Route::get('/product', 'ProductController@index');
+
+Route::get('/product/category/{id}', 'ProductController@searchCategory');
+
+// Route::get('/product/search', 'ProductController@search');
 
 Route::get('/productDetail/{id}', 'ProductController@productDetail');
 

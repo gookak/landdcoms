@@ -1,0 +1,4 @@
+.ui-slider .ui-slider-handle:focus 
+{ 
+  outline: none;
+}
