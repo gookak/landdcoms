@@ -25,6 +25,7 @@ class ProductController extends Controller
         if ($request->all() != '') {
             $products = Product::where('name', 'like', '%' . $request->input('name') . '%')
             ->where('category_id', 'like', '%' . $request->input('category_id') . '%')
+            ->whereBetween('price', [$request->input('price_min'), $request->input('price_max')])
             ->orderBy('createdate','desc')
             ->paginate(2);
         }else{
