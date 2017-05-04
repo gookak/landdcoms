@@ -21,4 +21,4 @@ Route::get('/', function(){
 
 Route::resource('category', 'CategoryController');
 
-// Route::post('/category/update/{id}', 'CategoryController@update');
+Route::resource('product', 'ProductController');
