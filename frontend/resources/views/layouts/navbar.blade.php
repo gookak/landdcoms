@@ -9,7 +9,7 @@
 <div class="navbar-collapse collapse">
     <ul class="nav navbar-nav">
         <li><a href="/">Home</a></li>
-        <li><a href="/product">Product</a></li>
+        <li><a href="/product?category_id=1">Product</a></li>
         {{-- <li><a href="single-product.html">Single product</a></li>
         <li><a href="cart.html">Cart</a></li>
         <li><a href="checkout.html">Checkout</a></li>

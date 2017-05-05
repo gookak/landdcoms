@@ -18,7 +18,7 @@ Route::get('/', 'HomeController@index');
 
 Route::get('/product', 'ProductController@index');
 
-Route::get('/product/category/{id}', 'ProductController@searchCategory');
+// Route::get('/product/{category_id}', 'ProductController@searchCategory');
 
 // Route::get('/product/search', 'ProductController@search');
 
