@@ -23,9 +23,7 @@ Route::resource('category', 'CategoryController');
 
 Route::resource('product', 'ProductController');
 
+Route::get('/fileupload', 'FileuploadController@index');
 
-Route::get('/upload', 'UploadController@uploadForm');
+Route::post('/fileupload', 'FileuploadController@upload');
 
-Route::post('/upload', 'UploadController@uploadSubmit');
-
-Route::get('/show', 'UploadController@show');
