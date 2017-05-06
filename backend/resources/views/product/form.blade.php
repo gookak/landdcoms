@@ -20,7 +20,7 @@
             <div id="msgErrorArea"></div>
         </div>
 
-        <form id="productForm" class="form-horizontal" role="form" action="{{ $form_action }}" method="POST">
+        <form id="productForm" class="form-horizontal" role="form" action="{{ $form_action }}" method="POST" enctype="multipart/form-data">
 
             {{ $mode=='edit'? method_field('PUT') : null }}
 
@@ -32,7 +32,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">ราคาขาย</label>
+                <label class="col-sm-2 control-label">ราคาขาย/บาท</label>
                 <div class="col-sm-5">
                     <input type="text" class="form-control" name="price" placeholder="" value="{{ $product->price }}" />
                 </div>
@@ -52,114 +52,18 @@
                 </div>
             </div>
 
-            <h4 class="header blue bolder smaller">รูปสินค้า</h4>
+            {{-- <h4 class="header blue bolder smaller">รูปสินค้า</h4> --}}
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">อัพโหลดรูปภาพ</label>
+                <label class="col-sm-2 control-label">รูปภาพ</label>
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" />
+                    <input id="id-input-file-3" type="file" class="form-control" name="images[]" multiple/>
                 </div>
+                <label>
+                    <input type="checkbox" name="file-format" id="id-file-format" class="ace" />
+                    <span class="lbl"> Allow only images</span>
+                </label>
             </div>
-
-            <ul class="ace-thumbnails clearfix sortable">
-
-                <li>
-                    <a href="assets/images/gallery/image-4.jpg" data-rel="colorbox" class="cboxElement">
-                        <img width="150" height="150" alt="150x150" src="assets/images/gallery/thumb-4.jpg">
-                        <div class="tags">
-                            <span class="label-holder">
-                                <span class="label label-info arrowed">fountain 01</span>
-                            </span>
-                        </div>
-                    </a>
-
-                    <div class="tools tools-top">
-                        <a href="#">
-                            <i class="ace-icon fa fa-link"></i>
-                        </a>
-
-                        <a href="#">
-                            <i class="ace-icon fa fa-paperclip"></i>
-                        </a>
-
-                        <a href="#">
-                            <i class="ace-icon fa fa-pencil"></i>
-                        </a>
-
-                        <a href="#">
-                            <i class="ace-icon fa fa-times red"></i>
-                        </a>
-                    </div>
-                </li>
-
-                <li>
-                    <a href="assets/images/gallery/image-4.jpg" data-rel="colorbox" class="cboxElement">
-                        <img width="150" height="150" alt="150x150" src="assets/images/gallery/thumb-4.jpg">
-                        <div class="tags">
-                            <span class="label-holder">
-                                <span class="label label-info arrowed">fountain 02</span>
-                            </span>
-
-                            <span class="label-holder">
-                                <span class="label label-danger">recreation</span>
-                            </span>
-                        </div>
-                    </a>
-
-                    <div class="tools tools-top">
-                        <a href="#">
-                            <i class="ace-icon fa fa-link"></i>
-                        </a>
-
-                        <a href="#">
-                            <i class="ace-icon fa fa-paperclip"></i>
-                        </a>
-
-                        <a href="#">
-                            <i class="ace-icon fa fa-pencil"></i>
-                        </a>
-
-                        <a href="#">
-                            <i class="ace-icon fa fa-times red"></i>
-                        </a>
-                    </div>
-                </li>
-
-                <li>
-                    <a href="assets/images/gallery/image-4.jpg" data-rel="colorbox" class="cboxElement">
-                        <img width="150" height="150" alt="150x150" src="assets/images/gallery/thumb-4.jpg">
-                        <div class="tags">
-                            <span class="label-holder">
-                                <span class="label label-info arrowed">fountain 03</span>
-                            </span>
-
-                            <span class="label-holder">
-                                <span class="label label-danger">recreation</span>
-                            </span>
-                        </div>
-                    </a>
-
-                    <div class="tools tools-top">
-                        <a href="#">
-                            <i class="ace-icon fa fa-link"></i>
-                        </a>
-
-                        <a href="#">
-                            <i class="ace-icon fa fa-paperclip"></i>
-                        </a>
-
-                        <a href="#">
-                            <i class="ace-icon fa fa-pencil"></i>
-                        </a>
-
-                        <a href="#">
-                            <i class="ace-icon fa fa-times red"></i>
-                        </a>
-                    </div>
-                </li>
-
-            </ul>
-
 
             <div class="form-group clearfix form-actions">
                 <div class="col-sm-5 col-xs-offset-2">
@@ -185,7 +89,38 @@
 <script type="text/javascript">
     $(function () {
 
-        var group = $("ul.sortable").sortable();
+        $('#id-input-file-3').ace_file_input({
+            style: 'well',
+            btn_choose: 'Drop files here or click to choose',
+            btn_change: null,
+            no_icon: 'ace-icon fa fa-cloud-upload',
+            droppable: true,
+            thumbnail: 'small'
+            //large | fit
+            //,icon_remove:null//set null, to hide remove/reset button
+            /**,before_change:function(files, dropped) {
+                //Check an example below
+                //or examples/file-upload.html
+                return true;
+            }*/
+            /**,before_remove : function() {
+                return true;
+            }*/
+            ,
+            preview_error : function(filename, error_code) {
+                // name of the file that failed
+                // error_code values
+                // 1 = 'FILE_LOAD_FAILED',
+                // 2 = 'IMAGE_LOAD_FAILED',
+                // 3 = 'THUMBNAIL_FAILED'
+                // alert(error_code);
+            }
+
+        }).on('change', function(){
+            // console.log($(this).data('ace_input_files'));
+            // console.log($(this).data('ace_input_method'));
+        });
+
 
         $('#productForm').bootstrapValidator({
             framework: 'bootstrap',
