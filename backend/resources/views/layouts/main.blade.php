@@ -287,6 +287,9 @@
 <script src="{{ asset('themes/ace-master/assets/js/ace-elements.min.js') }}"></script>
 <script src="{{ asset('themes/ace-master/assets/js/ace.min.js') }}"></script>
 
+<!-- jquery-sortable -->
+<script src="{{ asset('themes/ace-master/assets/js/jquery-sortable.js') }}"></script>
+
 <!-- my scripts -->
 <script src="{{ asset('js/custom.js') }}"></script>
 

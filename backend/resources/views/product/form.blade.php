@@ -32,13 +32,6 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">รูป</label>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" name="image" placeholder="" value="{{ $product->image }}" />
-                </div>
-            </div>
-
-            <div class="form-group">
                 <label class="col-sm-2 control-label">ราคาขาย</label>
                 <div class="col-sm-5">
                     <input type="text" class="form-control" name="price" placeholder="" value="{{ $product->price }}" />
@@ -59,12 +52,114 @@
                 </div>
             </div>
 
+            <h4 class="header blue bolder smaller">รูปสินค้า</h4>
+
             <div class="form-group">
-                <label class="col-sm-2 control-label">Html</label>
+                <label class="col-sm-2 control-label">อัพโหลดรูปภาพ</label>
                 <div class="col-sm-5">
-                    <textarea class="form-control" rows="5" name="html" placeholder="">{{ $product->html }}</textarea>
+                    <input type="text" class="form-control" />
                 </div>
             </div>
+
+            <ul class="ace-thumbnails clearfix sortable">
+
+                <li>
+                    <a href="assets/images/gallery/image-4.jpg" data-rel="colorbox" class="cboxElement">
+                        <img width="150" height="150" alt="150x150" src="assets/images/gallery/thumb-4.jpg">
+                        <div class="tags">
+                            <span class="label-holder">
+                                <span class="label label-info arrowed">fountain 01</span>
+                            </span>
+                        </div>
+                    </a>
+
+                    <div class="tools tools-top">
+                        <a href="#">
+                            <i class="ace-icon fa fa-link"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="ace-icon fa fa-paperclip"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="ace-icon fa fa-pencil"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="ace-icon fa fa-times red"></i>
+                        </a>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="assets/images/gallery/image-4.jpg" data-rel="colorbox" class="cboxElement">
+                        <img width="150" height="150" alt="150x150" src="assets/images/gallery/thumb-4.jpg">
+                        <div class="tags">
+                            <span class="label-holder">
+                                <span class="label label-info arrowed">fountain 02</span>
+                            </span>
+
+                            <span class="label-holder">
+                                <span class="label label-danger">recreation</span>
+                            </span>
+                        </div>
+                    </a>
+
+                    <div class="tools tools-top">
+                        <a href="#">
+                            <i class="ace-icon fa fa-link"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="ace-icon fa fa-paperclip"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="ace-icon fa fa-pencil"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="ace-icon fa fa-times red"></i>
+                        </a>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="assets/images/gallery/image-4.jpg" data-rel="colorbox" class="cboxElement">
+                        <img width="150" height="150" alt="150x150" src="assets/images/gallery/thumb-4.jpg">
+                        <div class="tags">
+                            <span class="label-holder">
+                                <span class="label label-info arrowed">fountain 03</span>
+                            </span>
+
+                            <span class="label-holder">
+                                <span class="label label-danger">recreation</span>
+                            </span>
+                        </div>
+                    </a>
+
+                    <div class="tools tools-top">
+                        <a href="#">
+                            <i class="ace-icon fa fa-link"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="ace-icon fa fa-paperclip"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="ace-icon fa fa-pencil"></i>
+                        </a>
+
+                        <a href="#">
+                            <i class="ace-icon fa fa-times red"></i>
+                        </a>
+                    </div>
+                </li>
+
+            </ul>
+
 
             <div class="form-group clearfix form-actions">
                 <div class="col-sm-5 col-xs-offset-2">
@@ -89,6 +184,8 @@
 
 <script type="text/javascript">
     $(function () {
+
+        var group = $("ul.sortable").sortable();
 
         $('#productForm').bootstrapValidator({
             framework: 'bootstrap',
