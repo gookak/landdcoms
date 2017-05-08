@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="{{ asset('themes/ace-master/assets/css/bootstrapValidator/bootstrapValidator.min.css') }}" />
 
   <!-- page specific plugin styles -->
+  <link rel="stylesheet" href="{{ asset('themes/ace-master/assets/css/colorbox.min.css') }}" />
 
   <!-- text fonts -->
   <link rel="stylesheet" href="{{ asset('themes/ace-master/assets/css/fonts.googleapis.com.css') }}" />
@@ -142,6 +143,14 @@
           <b class="arrow"></b>
         </li>
         <li class="">
+          <a href="/fileupload">
+            <i class="menu-icon fa fa-tachometer"></i>
+            <span class="menu-text"> อัพโหลดไฟล์ </span>
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+        <li class="">
           <a href="/customer">
             <i class="menu-icon fa fa-tachometer"></i>
             <span class="menu-text"> ข้อมูลลูกค้า </span>
@@ -180,7 +189,7 @@
             <li class="">
               <a href="tables.html">
                 <i class="menu-icon fa fa-caret-right"></i>
-                  ข้อมูลผู้ใช้งาน
+                ข้อมูลผู้ใช้งาน
               </a>
 
               <b class="arrow"></b>
@@ -272,6 +281,7 @@
 <!-- page specific plugin scripts -->
 <script src="{{ asset('themes/ace-master/assets/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('themes/ace-master/assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
+<script src="{{ asset('themes/ace-master/assets/js/jquery.colorbox.min.js') }}"></script>
 {{-- <script src="{{ asset('themes/ace-master/assets/js/dataTables.buttons.min.js') }}"></script>
 <script src="{{ asset('themes/ace-master/assets/js/buttons.flash.min.js') }}"></script>
 <script src="{{ asset('themes/ace-master/assets/js/buttons.html5.min.js') }}"></script>
@@ -286,6 +296,9 @@
 <!-- ace scripts -->
 <script src="{{ asset('themes/ace-master/assets/js/ace-elements.min.js') }}"></script>
 <script src="{{ asset('themes/ace-master/assets/js/ace.min.js') }}"></script>
+
+<!-- jquery-sortable -->
+<script src="{{ asset('themes/ace-master/assets/js/jquery-sortable.js') }}"></script>
 
 <!-- my scripts -->
 <script src="{{ asset('js/custom.js') }}"></script>

@@ -20,7 +20,7 @@
             <div id="msgErrorArea"></div>
         </div>
 
-        <form id="productForm" class="form-horizontal" role="form" action="{{ $form_action }}" method="POST">
+        <form id="productForm" class="form-horizontal" role="form" action="{{ $form_action }}" method="POST" enctype="multipart/form-data">
 
             {{ $mode=='edit'? method_field('PUT') : null }}
 
@@ -32,14 +32,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">รูป</label>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" name="image" placeholder="" value="{{ $product->image }}" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">ราคาขาย</label>
+                <label class="col-sm-2 control-label">ราคาขาย/บาท</label>
                 <div class="col-sm-5">
                     <input type="text" class="form-control" name="price" placeholder="" value="{{ $product->price }}" />
                 </div>
@@ -59,11 +52,17 @@
                 </div>
             </div>
 
+            {{-- <h4 class="header blue bolder smaller">รูปสินค้า</h4> --}}
+
             <div class="form-group">
-                <label class="col-sm-2 control-label">Html</label>
+                <label class="col-sm-2 control-label">รูปภาพ</label>
                 <div class="col-sm-5">
-                    <textarea class="form-control" rows="5" name="html" placeholder="">{{ $product->html }}</textarea>
+                    <input id="id-input-file-3" type="file" class="form-control" name="images[]" multiple/>
                 </div>
+                <label>
+                    <input type="checkbox" name="file-format" id="id-file-format" class="ace" />
+                    <span class="lbl"> Allow only images</span>
+                </label>
             </div>
 
             <div class="form-group clearfix form-actions">
@@ -89,6 +88,39 @@
 
 <script type="text/javascript">
     $(function () {
+
+        $('#id-input-file-3').ace_file_input({
+            style: 'well',
+            btn_choose: 'Drop files here or click to choose',
+            btn_change: null,
+            no_icon: 'ace-icon fa fa-cloud-upload',
+            droppable: true,
+            thumbnail: 'small'
+            //large | fit
+            //,icon_remove:null//set null, to hide remove/reset button
+            /**,before_change:function(files, dropped) {
+                //Check an example below
+                //or examples/file-upload.html
+                return true;
+            }*/
+            /**,before_remove : function() {
+                return true;
+            }*/
+            ,
+            preview_error : function(filename, error_code) {
+                // name of the file that failed
+                // error_code values
+                // 1 = 'FILE_LOAD_FAILED',
+                // 2 = 'IMAGE_LOAD_FAILED',
+                // 3 = 'THUMBNAIL_FAILED'
+                // alert(error_code);
+            }
+
+        }).on('change', function(){
+            // console.log($(this).data('ace_input_files'));
+            // console.log($(this).data('ace_input_method'));
+        });
+
 
         $('#productForm').bootstrapValidator({
             framework: 'bootstrap',
