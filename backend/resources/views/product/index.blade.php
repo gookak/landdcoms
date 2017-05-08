@@ -55,7 +55,9 @@
                             </div>
                         </td>                        
                         <td>{{ $product->code }}</td>
-                        <td>{{ $product->image }}</td>
+                        <td>
+                        <img width="80" height="80" alt="150x150" src="{{ asset('storage/' . $product->productImage[0]->filename )}}">
+                        </td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->balance }}</td>

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FileUploadRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,12 @@ class FileUploadRequest extends FormRequest
      */
     public function rules()
     {
-        // $rules = [
-        //     'name' => 'required'
-        // ];
+        $rules = [
+        'category_id' => 'required',
+        'name' => 'required',
+        'price' => 'required',
+        'balance' => 'required'
+        ];
 
         $images = count($this->input('images'));
         foreach(range(0, $images) as $index) {

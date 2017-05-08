@@ -17,12 +17,22 @@
         <!-- PAGE CONTENT BEGINS -->
 
         <div class="clearfix">
-            <div id="msgErrorArea"></div>
+            <div id="msgErrorArea">
+                @include('layouts.errors')
+            </div>
         </div>
 
         <form id="productForm" class="form-horizontal" role="form" action="{{ $form_action }}" method="POST" enctype="multipart/form-data">
+            {{ csrf_field() }}
 
             {{ $mode=='edit'? method_field('PUT') : null }}
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">ประเภทสินค้า</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="category_id" placeholder="" value="{{ $product->category_id }}" />
+                </div>
+            </div>
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">ชื่อ</label>
@@ -54,16 +64,45 @@
 
             {{-- <h4 class="header blue bolder smaller">รูปสินค้า</h4> --}}
 
+            @if ($mode=='create')
             <div class="form-group">
                 <label class="col-sm-2 control-label">รูปภาพ</label>
                 <div class="col-sm-5">
                     <input id="id-input-file-3" type="file" class="form-control" name="images[]" multiple/>
                 </div>
-                <label>
-                    <input type="checkbox" name="file-format" id="id-file-format" class="ace" />
-                    <span class="lbl"> Allow only images</span>
-                </label>
             </div>
+            @elseif ($mode=='edit')
+            <div class="form-group">
+                <label class="col-sm-2 control-label">รูปภาพ</label>
+                <div class="col-sm-5">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-5 col-xs-offset-2">
+                    @if ( $product->productImage )
+                    <table class="table  table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>ไฟล์</th>
+                                <th>เรียง</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($product->productImage as $productImage)
+                            <tr>
+                                <td>
+                                    <img width="80" height="80" alt="150x150" src="{{ asset('storage/' . $productImage->filename )}}">
+                                </td>
+                                <td>{{ $productImage->sort }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @endif
+                </div>
+            </div>
+            @endif
+
 
             <div class="form-group clearfix form-actions">
                 <div class="col-sm-5 col-xs-offset-2">
@@ -125,40 +164,56 @@
         $('#productForm').bootstrapValidator({
             framework: 'bootstrap',
             fields: {
+                category_id: {
+                    validators: {
+                        notEmpty: true
+                    }
+                },
                 name: {
+                    validators: {
+                        notEmpty: true
+                    }
+                },
+                price: {
+                    validators: {
+                        notEmpty: true
+                    }
+                },
+                balance: {
                     validators: {
                         notEmpty: true
                     }
                 }
             }
-        }).on("success.form.bv", function (e) {
-            // Prevent form submission
-            e.preventDefault();
-            // Get the form instance
-            var $form = $(e.target);
-            // console.log($form);
-            // console.log($form.attr('action'));
-            // console.log($form.serialize());
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: $form.attr('action'), 
-                type: 'POST',
-                data: $form.serialize(),
-            })
-            .done(function(result) {
-                console.log(result);
-                if (result.status === 200) {
-                    window.location = "/product";
-                }else {
-                    showMsgError("#msgErrorArea", result.msgerror);
-                }
-            }).fail(function () {
-                showMsgError("#msgErrorArea", "ส่งข้อมูล AJAX ผิดพลาด");
-            });
         });
+        // .on("success.form.bv", function (e) {
+        //     // Prevent form submission
+        //     e.preventDefault();
+        //     // Get the form instance
+        //     var $form = $(e.target);
+        //     // console.log($form);
+        //     // console.log($form.attr('action'));
+        //     // console.log($form.serialize());
+
+        //     $.ajax({
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         url: $form.attr('action'), 
+        //         type: 'POST',
+        //         data: $form.serialize(),
+        //     })
+        //     .done(function(result) {
+        //         console.log(result);
+        //         if (result.status === 200) {
+        //             window.location = "/product";
+        //         }else {
+        //             showMsgError("#msgErrorArea", result.msgerror);
+        //         }
+        //     }).fail(function () {
+        //         showMsgError("#msgErrorArea", "ส่งข้อมูล AJAX ผิดพลาด");
+        //     });
+        // });
 
     });
 </script>

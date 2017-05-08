@@ -17,48 +17,33 @@
         <!-- PAGE CONTENT BEGINS -->
         <div class="clearfix">
             <div id="msgErrorArea">
-                @if (count($errors) > 0)
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                @endif
+                @include('layouts.errors')
             </div>
         </div>
 
         <div class="clearfix">
             <div class="pull-left tableTools-container">
-                <form class="form-horizontal" role="form" action="/fileupload" method="POST" enctype="multipart/form-data">
+                <form class="form-inline" role="form" action="/fileupload" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    <input type="file" class="form-control" name="images[]" multiple/>
-                    <input type="submit" value="Upload" />
-                </form>
-            </div>
+                    <input type="file" class="form-control" name="images[]" multiple placeholder=""/>
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary">Upload</button>
+            </form>
         </div>
-
-        <ul class="ace-thumbnails clearfix">
-            <li>
-                <a href="assets/images/gallery/image-2.jpg" data-rel="colorbox">
-                    <img width="150" height="150" alt="150x150" src="assets/images/gallery/thumb-2.jpg" />
-                    <div class="text">
-                        <div class="inner">Sample Caption on Hover</div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="assets/images/gallery/image-2.jpg" data-rel="colorbox">
-                    <img width="150" height="150" alt="150x150" src="assets/images/gallery/thumb-2.jpg" />
-                    <div class="text">
-                        <div class="inner">Sample Caption on Hover</div>
-                    </div>
-                </a>
-            </li>
-        </ul>
-
-
-        <!-- PAGE CONTENT ENDS -->
-    </div><!-- /.col -->
+    </div>
+    @if ($fileuploads)
+    <ul class="ace-thumbnails clearfix">
+        @foreach ($fileuploads as $fileupload)
+        <li>
+            <a data-rel="colorbox" class="cboxElement">
+                <img width="150" height="150" alt="150x150" src="{{ asset('storage/' . $fileupload->filename )}}">
+            </a>
+        </li>
+        @endforeach
+    </ul>
+    @endif
+    <!-- PAGE CONTENT ENDS -->
+</div><!-- /.col -->
 </div><!-- /.row -->
 
 
@@ -67,37 +52,40 @@
 <script type="text/javascript">
     $(function () {
 
-        var $overflow = '';
-        var colorbox_params = {
-            rel: 'colorbox',
-            reposition:true,
-            scalePhotos:true,
-            scrolling:false,
-            previous:'<i class="ace-icon fa fa-arrow-left"></i>',
-            next:'<i class="ace-icon fa fa-arrow-right"></i>',
-            close:'&times;',
-            current:'{current} of {total}',
-            maxWidth:'100%',
-            maxHeight:'100%',
-            onOpen:function(){
-                $overflow = document.body.style.overflow;
-                document.body.style.overflow = 'hidden';
-            },
-            onClosed:function(){
-                document.body.style.overflow = $overflow;
-            },
-            onComplete:function(){
-                $.colorbox.resize();
-            }
-        };
 
-        $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+        // //colorbox
+        // var $overflow = '';
+        // var colorbox_params = {
+        //     rel: 'colorbox',
+        //     reposition:true,
+        //     scalePhotos:true,
+        //     scrolling:false,
+        //     previous:'<i class="ace-icon fa fa-arrow-left"></i>',
+        //     next:'<i class="ace-icon fa fa-arrow-right"></i>',
+        //     close:'&times;',
+        //     current:'{current} of {total}',
+        //     maxWidth:'100%',
+        //     maxHeight:'100%',
+        //     onOpen:function(){
+        //         $overflow = document.body.style.overflow;
+        //         document.body.style.overflow = 'hidden';
+        //     },
+        //     onClosed:function(){
+        //         document.body.style.overflow = $overflow;
+        //     },
+        //     onComplete:function(){
+        //         $.colorbox.resize();
+        //     }
+        // };
 
-        $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
+        // $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
 
-        $(document).one('ajaxloadstart.page', function(e) {
-            $('#colorbox, #cboxOverlay').remove();
-        });
+        // $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
+
+        // $(document).one('ajaxloadstart.page', function(e) {
+        //     $('#colorbox, #cboxOverlay').remove();
+        // });
+        // //end colorbox
 
     });
 </script>

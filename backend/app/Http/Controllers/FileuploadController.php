@@ -3,28 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Fileupload;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\FileUploadRequest;
+use Illuminate\Support\Facades\DB;
 
 class FileuploadController extends Controller
 {
 	public function index()
 	{
-		return view('fileupload.index');
+		$fileuploads = Fileupload::orderBy('updated_at','desc')->get();
+		return view('fileupload.index', compact('fileuploads'));
 	}
 
-	public function upload(Request $request)
+	public function show()
 	{
-		// ref >> http://laraveldaily.com/upload-multiple-files-laravel-5-4/
-		dd($request->all());
+		// $files = Storage::files('public');
+		$url = Storage::url('7fonNYTrmqToTZjB6tVXlKXZagC0vpMHwyk5uWAn.jpeg');
+		$url2 = Storage::url('public/product/rpKn8rwfwrUxwfsC98GHvapUPK7gLec1BRNYm6dW.jpeg');
+		$image = "<img src='".$url2."'/>";
+		return $image;
+	}
 
-		// $product = Product::create($request->all());
+	public function upload(FileUploadRequest $request)
+	{
+		DB::beginTransaction();
+		try{
+			foreach ($request->images as $image) {
+				//$filename = $image->store('public');
+				$filename = Storage::put('public', $image);
+				Fileupload::create([
+					'filename' => $image->hashName()
+					]);
+			}
+		} catch (\Exception $ex) {
+			DB::rollback();
+		}
+		DB::commit();
 
-		// foreach ($request->photos as $photo) {
-		// 	$filename = $photo->store('photos');
-		// 	ProductsPhoto::create([
-		// 		'product_id' => $product->id,
-		// 		'filename' => $filename
-		// 		]);
-		// }
-		// return 'Upload successful!';
+		//return redirect('fileupload');
+		return back();
 	}
 }
