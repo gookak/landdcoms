@@ -28,26 +28,26 @@
                             </button>
                         Search Products
                     </div>
-                    <form action="/product" class="search-collapse collapse" method="GET">
+                    <form id="search" action="/product" class="search-collapse collapse" method="GET">
                         {{-- {{ csrf_field() }} --}}
                         <p class="form-row">
                             <label for="name">ชื่อสินค้า</label>
-                            <input type="text" id="name" name="name" class="input-text form-control" placeholder="Name products...">  
+                            <input type="text" id="name" name="name" class="input-text form-control" placeholder="Name products..." value="{{Request::input('name')? Request::input('name') : null}}">  
                         </p>
                         <p class="form-row">
                             <label for="category_id">ประเภทสินค้า</label>
                             <select id="category_id" name="category_id" class="form-control">
                                 <option value="">เลือกประเภท...</option>
                                 @foreach($category_list as $category)
-                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                <option value="{{$category->id}}" {{Request::input('category_id') == $category->id? "selected" : null}}>{{$category->name}}</option>
                                 @endforeach
                             </select>
                         </p>
                         <p class="form-row">
                             <label>ราคา: <span id="price"></span></label>
                             <div id="slider-range"></div>
-                            <input type="hidden" id="price_min" name="price_min">
-                            <input type="hidden" id="price_max" name="price_max">
+                            <input type="hidden" id="price_min" name="price_min" value="{{Request::input('price_min')? Request::input('price_min') : null}}">
+                            <input type="hidden" id="price_max" name="price_max" value="{{Request::input('price_max')? Request::input('price_max') : null}}">
                         </p>
                         <button type="submit"><i class="fa fa-search"></i> Search</button>
                     </form>
@@ -72,10 +72,33 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <div class="product-breadcroumb">
-                    <a href="/">Home</a>
-                    <a href="/product?category_id={{$category_current->id}}">{{$category_current->name}}</a>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="product-breadcroumb">
+                            <a href="/">Home</a>
+                            <a href="/product?category_id={{$category_current->id}}">{{$category_current->name}}</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <div>
+                        <form name="sortby" action="/product" method="GET">
+                                <input type="hidden" name="name" value="{{Request::input('name')}}">
+                                <input type="hidden" name="category_id" value="{{Request::input('category_id')}}">
+                                <input type="hidden" name="price_min" value="{{Request::input('price_min')}}">
+                                <input type="hidden" name="price_max" value="{{Request::input('price_max')}}">
+                                <label class="col-xs-12 col-sm-6" for="sortby">เรียงตาม</label>
+                                <div class="col-xs-12 col-sm-6">
+                                    <select id="sortby" name="sortby" class="form-control">
+                                        <option value="latest" {{Request::input('sortby') == "latest"? "selected" : null}}>ล่าสุด</option>
+                                        <option value="pricedesc" {{Request::input('sortby') == "pricedesc"? "selected" : null}}>ราคาสูงสุด-ต่ำสุด</option>
+                                        <option value="priceasc" {{Request::input('sortby') == "priceasc"? "selected" : null}}>ราคาต่าสุด-สูงสุด</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+               
                 @if ($products->count())
                     @foreach($products as $product)
                         <div class="col-md-3 col-sm-6">
@@ -89,7 +112,7 @@
                                 </div>  
 
                                 <div class="product-option-shop">
-                                    <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/canvas/shop/?add-to-cart=70"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                    <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/cart/addProduct/{{$product->id}}"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                                 </div>                       
                             </div>
                         </div>
@@ -142,12 +165,14 @@
 <script type="text/javascript">
     $(document).ready(function(){
         var min = 0;
-        var max = 25000;
+        var max = {{$maxprice}};
+        var price_min = {{Request::input('price_min')? Request::input('price_min') : 0}};
+        var price_max = {{Request::input('price_max')? Request::input('price_max') : $maxprice}};
         $( "#slider-range" ).slider({
             range: true,
             min: min,
             max: max,
-            values: [ min, max ],
+            values: [ price_min, price_max ],
             slide: function( event, ui ) {
                 $( "#price" ).html( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
                 $( "#price_min" ).val(ui.values[ 0 ]);
@@ -166,6 +191,12 @@
             $(this.firstChild).hide();
         });
         $( "#price" ).html( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+
+
+
+        $("#sortby").change(function(){
+            $("form[name=sortby]").submit()
+        });
     });
 </script>
 @endsection
