@@ -15,10 +15,9 @@
 
 
 <div class="single-product-area">
-    <div class="zigzag-bottom"></div>
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
 
                 <div class="single-sidebar">
                     <h2 class="sidebar-title">Search Products</h2>
@@ -73,25 +72,25 @@
                 </div>
             </div>
 
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="product-content-right">
                     <div class="product-breadcroumb">
-                        <a href="">Home</a>
-                        <a href="">Category Name</a>
-                        <a href="">Sony Smart TV - 2015</a>
+                        <a href="/">Home</a>
+                        <a href="/product?category_id={{$product->category_id}}">{{$product->category->name}}</a>
+                        <span>{{$product->name}}</span>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="product-images">
                                 <div class="product-main-img">
-                                    <img src="img/product-2.jpg" alt="">
+                                    <img src="{{ asset('themes/ustora/img/product-2.jpg') }}" alt="">
                                 </div>
 
                                 <div class="product-gallery">
-                                    <img src="img/product-thumb-1.jpg" alt="">
-                                    <img src="img/product-thumb-2.jpg" alt="">
-                                    <img src="img/product-thumb-3.jpg" alt="">
+                                    <img src="{{ asset('themes/ustora/img/product-thumb-1.jpg') }}" alt="">
+                                    <img src="{{ asset('themes/ustora/img/product-thumb-2.jpg') }}" alt="">
+                                    <img src="{{ asset('themes/ustora/img/product-thumb-3.jpg') }}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -111,7 +110,7 @@
                                 </form>   
 
                                 <div class="product-inner-category">
-                                    <p>Category: <a href="">{{$product->category->name}}</a>
+                                    <p>Category: <a href="/product?category_id={{$product->category_id}}">{{$product->category->name}}</a>
                                     {{-- Tags: <a href="">awesome</a>, <a href="">best</a>, <a href="">sale</a>, <a href="">shoes</a>. --}} </p>
                                 </div> 
 
@@ -153,7 +152,7 @@
                     </div>
 
 
-                    <div class="related-products-wrapper">
+                    {{-- <div class="related-products-wrapper">
                         <h2 class="related-products-title">Related Products</h2>
                         <div class="related-products-carousel">
                             <div class="single-product">
@@ -246,7 +245,7 @@
                                 </div>                            
                             </div>                                    
                         </div>
-                    </div>
+                    </div> --}}
                 </div>                    
             </div>
         </div>
