@@ -18,7 +18,7 @@
     <div class="zigzag-bottom"></div>
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            {{-- <div class="col-md-4">
                 <div class="single-sidebar">
                     <h2 class="sidebar-title">Search Products</h2>
                     <form action="#">
@@ -69,12 +69,12 @@
                         <li><a href="#">Sony Smart TV - 2015</a></li>
                     </ul>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="col-md-8">
                 <div class="product-content-right">
                     <div class="woocommerce">
-                        <form method="post" action="#">
+                        <form method="post" class="shop_form" action="#">
                             <table cellspacing="0" class="shop_table cart">
                                 <thead>
                                     <tr>
@@ -87,10 +87,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($carts->items() as $cart)
+                                @if(Session::has('cart'))
+                                {{-- @if(Cookie::get('cart')) --}}
+                                @foreach($products as $product)
                                     <tr class="cart_item">
                                         <td class="product-remove">
-                                            <a title="Remove this item" class="remove" href="#">×</a> 
+                                            <button type="button" class="btn btn-xs btn-danger removeItem" data-productid="{{$product['item']['id']}}"><i class="fa fa-times"></i></button> 
                                         </td>
 
                                         <td class="product-thumbnail">
@@ -98,32 +100,35 @@
                                         </td>
 
                                         <td class="product-name">
-                                            <a href="/productDetail/{{$cart->id}}">{{$cart->name}}</a> 
+                                            <a href="/productDetail/{{$product['item']['id']}}">{{$product['item']['name']}}</a> 
                                         </td>
 
                                         <td class="product-price">
-                                            <span class="amount">{{$cart->price}}</span> 
+                                            <span class="amount">{{$product['item']['price']}}</span> 
                                         </td>
 
                                         <td class="product-quantity">
                                             <div class="quantity buttons_added">
-                                                <input type="button" class="minus" value="-">
-                                                <input type="number" size="4" class="input-text qty text" title="Qty" value="1" min="0" step="1">
-                                                <input type="button" class="plus" value="+">
+                                                <button type="button" class="btn btn-xs btn-primary minusItem" data-productid="{{$product['item']['id']}}"><i class="fa fa-minus"></i></button> 
+                                                <input type="text" readonly size="2" class="input-text qty text" title="Qty" value="{{$product['qty']}}">
+                                                <button type="button" class="btn btn-xs btn-primary plusItem" data-productid="{{$product['item']['id']}}"><i class="fa fa-plus"></i></button> 
                                             </div>
                                         </td>
 
                                         <td class="product-subtotal">
-                                            <span class="amount">£15.00</span> 
+                                            <span class="amount">{{$product['price']}}</span> 
                                         </td>
                                     </tr>
                                 @endforeach
-                                    <tr>
+                                @else
+                                <tr><td colspan="6">ไม่มีข้อมูล</td></tr>
+                                @endif
+                                    {{-- <tr>
                                         <td class="actions" colspan="6">
                                             <input type="submit" value="Update Cart" name="update_cart" class="button">
                                             <input type="submit" value="Checkout" name="proceed" class="checkout-button button alt wc-forward">
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                 </tbody>
                             </table>
                         </form>
@@ -131,7 +136,7 @@
                         <div class="cart-collaterals">
 
 
-                            <div class="cross-sells">
+                            {{-- <div class="cross-sells">
                                 <h2>You may be interested in...</h2>
                                 <ul class="products">
                                     <li class="product">
@@ -154,30 +159,32 @@
                                         <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> --}}
 
 
-                            <div class="cart_totals ">
-                                <h2>Cart Totals</h2>
+                            <div class="cart_totals">
+                                <div class="shop_total">
+                                    <h2>Cart Totals</h2>
 
-                                <table cellspacing="0">
-                                    <tbody>
-                                        <tr class="cart-subtotal">
-                                            <th>Cart Subtotal</th>
-                                            <td><span class="amount">£15.00</span></td>
-                                        </tr>
+                                    <table cellspacing="0">
+                                        <tbody>
+                                            <tr class="cart-subtotal">
+                                                <th>Cart Subtotal</th>
+                                                <td><span class="amount">{{$totalPrice}}</span></td>
+                                            </tr>
 
-                                        <tr class="shipping">
-                                            <th>Shipping and Handling</th>
-                                            <td>Free Shipping</td>
-                                        </tr>
+                                            <tr class="shipping">
+                                                <th>Shipping and Handling</th>
+                                                <td>Free Shipping</td>
+                                            </tr>
 
-                                        <tr class="order-total">
-                                            <th>Order Total</th>
-                                            <td><strong><span class="amount">£15.00</span></strong> </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                            <tr class="order-total">
+                                                <th>Order Total</th>
+                                                <td><strong><span class="amount">{{$totalPrice}}</span></strong> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
 
@@ -455,4 +462,44 @@
     </div>
 </div>
 
+@endsection
+
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function(){ 
+
+        $(".woocommerce").on("click",".minusItem",function(){
+            var productId = $(this).data("productid");
+            $.get("/cart/reduceProduct/"+productId,function(data){
+                console.log(data);
+                $(".cart-reload").load("/product .shopping-item");
+                $("form.shop_form").load("/cart table.shop_table");
+                $(".cart_totals").load("/cart .shop_total");
+            });
+
+        });
+
+        $(".woocommerce").on("click",".removeItem",function(){
+            var productId = $(this).data("productid");
+            $.get("/cart/removeItem/"+productId,function(data){
+                console.log(data);
+                $(".cart-reload").load("/product .shopping-item");
+                $("form.shop_form").load("/cart table.shop_table");
+                $(".cart_totals").load("/cart .shop_total");
+            });
+
+        });
+
+        $(".woocommerce").on("click",".plusItem",function(){
+            var productId = $(this).data("productid");
+            $.get("/cart/plusProduct/"+productId,function(data){
+                console.log(data);
+                $(".cart-reload").load("/product .shopping-item");
+                $("form.shop_form").load("/cart table.shop_table");
+                $(".cart_totals").load("/cart .shop_total");
+            });
+
+        });
+    });
+</script>
 @endsection

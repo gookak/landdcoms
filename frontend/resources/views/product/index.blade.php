@@ -112,7 +112,7 @@
                                 </div>  
 
                                 <div class="product-option-shop">
-                                    <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/cart/addProduct/{{$product->id}}"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                    <button class="add_to_cart_button add_item_cart" data-productid="{{$product->id}}"><i class="fa fa-shopping-cart"></i> Add to cart</button>
                                 </div>                       
                             </div>
                         </div>
@@ -196,6 +196,15 @@
 
         $("#sortby").change(function(){
             $("form[name=sortby]").submit()
+        });
+
+        $(".add_item_cart").click(function(){
+            var productId = $(this).data("productid");
+            // var qty =  $(this).data("qty");
+            $.get("/cart/addProduct/"+productId,function(data){
+                $(".cart-reload").load("/product .shopping-item");
+            });
+
         });
     });
 </script>

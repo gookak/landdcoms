@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Category;
+use App\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Cookie\CookieJar;
+use App\Http\Requests;
 use DB;
-
+use Session;
+use Cookie;
 class CartController extends Controller
 {
 
@@ -15,51 +20,89 @@ class CartController extends Controller
         // $this->middleware('auth');
     }
 
-    public function addItem ($productId){
-
+    public function addItem (CookieJar $cookieJar,Request $request, $productId){
 
         $product = Product::find($productId);
+        $qty = $request->input('qty')? $request->input('qty') : 1;
 
 
-        $cart = Cart::add(array('id' => $product->id, 'name' => $product->name, 'qty' => 1, 'price' => $product->price));
+        /* Cart by Session */
 
-        echo Cart::get($rowId);;
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->add($product,$product->id,$qty);
+        $request->session()->put('cart',$cart);
+
+        // dd($request->session()->get('cart'));    
+
+        // return redirect("/product");  
+
+        /* Cart by Cookie */
+        // $oldCart = Cookie::get('cart') ? Cookie::get('cart') : null;
+        // // $oldCart = $request->cookie('cart') ? $request->cookie('cart') : null;
         
-        // return view('cart.index',compact('carts'));
+        // $cart = new Cart($oldCart);
+        // $cart->add($product,$product->id,$qty);
 
-        // if(!$cart){
-        //     $cart =  new Cart();
-        //     // $cart->user_id=Auth::user()->id;
-        //     $cart->user_id= 1234;
-        //     $cart->save();
-        // }
+        // // $cart = $cookieJar->getQueuedCookies($cart);
+        
+        // $cookieJar->queue('cart', $cart); 
+        // dd(Cookie::get('cart'));
+    }
 
-        // $cartItem  = new Cartitem();
-        // $cartItem->product_id=$productId;
-        // $cartItem->cart_id= ;
-        // $cartItem->save();
+    public function reduceByOne($productId) {
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->reduceByOne($productId);
+        if (count($cart->items) > 0) {
+            Session::put('cart', $cart);
+        } else {
+            Session::forget('cart');
+        }
+        // return redirect()->route('product.shoppingCart');
+    }
 
-        // echo $cartItem;
-
-        // return redirect('/cart');
-
+    public function plusByOne($productId) {
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->plusByOne($productId);
+        if (count($cart->items) > 0) {
+            Session::put('cart', $cart);
+        } else {
+            Session::forget('cart');
+        }
+        // return redirect()->route('product.shoppingCart');
     }
 
     public function showCart(){
-        
-        $carts = Cart();
 
-        return view('cart.index',compact('carts'));
+        /* Cart by Cookie */
+
+        // $oldCart = Cookie::get('cart');
+        // $cart = new Cart($oldCart);
+        // $products = $cart->items;
+
+        /* Cart by Session */
+
+        // if(Session::has('cart')){
+        //     return view('cart.index',compact('products => null'));
+        // }
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        $products = $cart->items;
+
+        return view('cart.index',['products' => $cart->items, 'totalPrice'=>$cart->totalPrice]);
     }
 
-    public function removeItem($id){
-
-        CartItem::destroy($id);
-        return redirect('/cart');
-    }
-
-    public function index(Request $request)
-    {
-        return view('cart.cart');
+    public function removeItem($productId) {
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->removeItem($productId);
+        if (count($cart->items) > 0) {
+            Session::put('cart', $cart);
+        } else {
+            Session::forget('cart');
+        }
+        // return redirect()->route('product.shoppingCart');
     }
 }
