@@ -18,20 +18,18 @@ class ProductController extends Controller
     public function index(Request $request)
     {
 
-        // $search = \Request::get('category');
-        // $search_category = \Request::get('category');
-
         $name = $request->input('name');
         $categoryId = $request->input('category_id')? $request->input('category_id') : 1;
-        // $categoryId = $request->input('category_id');
         $price_min = $request->input('price_min');
         $price_max = $request->input('price_max');
-
+        $sortby = $request->input('sortby');
 
         $category_list = Category::all();
         $category = Category::find($request->input('category_id'));
         $tbl_product = DB::table('product');
 
+        $maxprice = Product::where('category_id', $categoryId)->max('price');
+        // $minprice = Product::where('category_id', $categoryId)->min('price');
 
         if ($name) {
             $tbl_product = $tbl_product->where('name', 'like', '%' . $name . '%');
@@ -47,36 +45,19 @@ class ProductController extends Controller
             $tbl_product = $tbl_product->whereBetween('price', [$price_min, $price_max]);
         }
 
+        if ($sortby == "latest"){
+            $tbl_product = $tbl_product->orderBy('created_at','desc');
+        }else if($sortby == "pricedesc"){
+            $tbl_product = $tbl_product->orderBy('price','desc');
+        }else if ($sortby == "priceasc") {
+            $tbl_product = $tbl_product->orderBy('price','asc');
+        }
+
         $category_list = Category::all();
         $category_current = Category::find($categoryId);
-        $products = $tbl_product->orderBy('created_at','desc')->paginate(2);
+        $products = $tbl_product->paginate(2);
 
-        // if ($request->all()) {
-        //     $products = Product::where('name', 'like', '%' . $request->input('name') . '%')
-        //     ->where('category_id', 'like', $request->input('category_id'))
-        //     ->whereBetween('price', [$request->input('price_min'), $request->input('price_max')])
-        //     ->orderBy('created_at','desc')
-        //     ->paginate(2);
-        // }else{
-        //     $products = $tbl_product->orderBy('created_at','desc')->paginate(2);
-        // }
-
-
-
-
-        // $search = $request->input('search');
-        // $search_category = $request->input('category');
-
-
-        // if ($search != '') {
-        //     $products = Product::where('name', 'like', '%' . $search . '%')->orderBy('createdate','desc')->paginate(2);
-        // }elseif($search_category !=''){
-        //     $products = Product::where('category_id', 'like', '%' . $search_category . '%')->orderBy('createdate','desc')->paginate(2);
-        // }else{
-        //     $products = Product::orderBy('createdate','desc')->paginate(2);
-        // }
-        // $categorys = Category::all();
-        return view('product.index',compact('products','category_list','category_current'));
+        return view('product.index',compact('products','category_list','category_current','maxprice','minprice'));
     }
 
     // public function searchCategory($id)
