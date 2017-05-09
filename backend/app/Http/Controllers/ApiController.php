@@ -15,8 +15,8 @@ class ApiController extends Controller
         $status = 200;
         $rs = Fileupload::orderBy('updated_at','desc')->get();
         foreach ($rs as $row) {
-            // $row->setAttribute('url', '../uploads/products/'.$row->filename);
-            $row->setAttribute('url', '/uploads/products/'.$row->filename);
+            // $row->setAttribute('url', '/uploads/products/'.$row->filename);
+            $row->setAttribute('url', env('FILE_URL').$row->filename);
         }
         //echo $rs;
         $data = ['status' => $status, 'rs' => $rs];

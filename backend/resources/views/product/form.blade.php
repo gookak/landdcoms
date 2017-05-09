@@ -99,7 +99,7 @@
                     <ul id="ul-image" class="ace-thumbnails clearfix">
                         @foreach($product->productImage as $productImage)
                         <li data-fileid="{{ $productImage->fileupload->id }}">
-                            <img width="150" height="150" alt="150x150" src="{{ asset('uploads/products/' . $productImage->fileupload->filename )}}">
+                            <img width="150" height="150" alt="150x150" src="{{ asset(env('FILE_URL').$productImage->fileupload->filename )}}">
                             <div class="tools tools-bottom">
                                 <a class="a-del"><i class="ace-icon fa fa-times red"></i></a>
                             </div>
@@ -150,7 +150,7 @@
             // console.log(st);
             $('#ul-image').append(st);
 
-            //$('#modal-add-image').modal('hide');
+            $('#modal-add-image').modal('hide');
         });
 
         // Bootstrap Modal

@@ -190,7 +190,22 @@ class ProductController extends Controller
      */
     public function destroy(product $product)
     {
-        //
+        $status = 200;
+        $msgerror = "";
+        DB::beginTransaction();
+        try{
+            $rs = $product->delete();
+        } catch (\Exception $ex) {
+            $status = 500;
+            $msgerror = $ex->getMessage();
+            DB::rollback();
+        }
+        DB::commit();
+        if ($msgerror == "") {
+            $msgerror = 'บันทึกข้อมูลเรียบร้อย';
+        }
+        $data = ['status' => $status, 'msgerror' => $msgerror, 'rs' => $rs];
+        return Response::json($data);
     }
 
     public function GeraHash($qtd){ 

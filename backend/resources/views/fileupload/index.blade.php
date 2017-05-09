@@ -35,8 +35,8 @@
     <ul id="show-image" class="ace-thumbnails clearfix">
         @foreach ($fileuploads as $fileupload)
         <li>
-            <a href="{{ asset('uploads/products/' . $fileupload->filename )}}" data-rel="colorbox" class="cboxElement">
-                <img width="150" height="150" alt="150x150" src="{{ asset('uploads/products/' . $fileupload->filename )}}">
+            <a href="{{ asset(env('FILE_URL').$fileupload->filename )}}" data-rel="colorbox" class="cboxElement">
+                <img width="150" height="150" alt="150x150" src="{{ asset(env('FILE_URL').$fileupload->filename )}}">
                 <div class="text">
                     <div class="inner">Zoom</div>
                 </div>
