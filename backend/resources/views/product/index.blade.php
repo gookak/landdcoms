@@ -56,7 +56,9 @@
                         </td>                        
                         <td>{{ $product->code }}</td>
                         <td>
-                        <img width="80" height="80" alt="150x150" src="{{ asset('storage/' . $product->productImage[0]->filename )}}">
+                            @if(count($product->productImage) > 0)
+                            <img width="80" height="80" alt="150x150" src="{{ asset('uploads/products/' . $product->productImage[0]->fileupload->filename )}}">
+                            @endif
                         </td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>

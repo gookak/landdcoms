@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Fileupload;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\FileUploadRequest;
-use Illuminate\Support\Facades\DB;
+use DB;
+use Response;
+use File;
 
 class FileuploadController extends Controller
 {
@@ -31,7 +33,8 @@ class FileuploadController extends Controller
 		try{
 			foreach ($request->images as $image) {
 				//$filename = $image->store('public');
-				$filename = Storage::put('public', $image);
+				//$filename = Storage::put('public/uploads', $image);
+				$filename = $image->store('products', 'uploads');
 				Fileupload::create([
 					'filename' => $image->hashName()
 					]);
@@ -43,5 +46,30 @@ class FileuploadController extends Controller
 
 		//return redirect('fileupload');
 		return back();
+	}
+
+	public function destroy($id)
+	{
+		$status = 200;
+		$msgerror = "";
+		DB::beginTransaction();
+		try{
+			$fileupload = Fileupload::find($id);
+			if($fileupload){
+				\File::delete('uploads/products/'.$fileupload->filename);
+				$rs = $fileupload->delete();
+			}
+		} catch (\Exception $ex) {
+			$status = 500;
+			$msgerror = $ex->getMessage();
+			DB::rollback();
+		}
+		DB::commit();
+		if ($msgerror == "") {
+			$msgerror = 'บันทึกข้อมูลเรียบร้อย';
+		}
+
+		$data = ['status' => $status, 'msgerror' => $msgerror, 'rs' => $rs];
+		return Response::json($data);
 	}
 }

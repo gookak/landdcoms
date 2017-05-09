@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\ProductImage;
+use App\Category;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use App\Http\Requests\ProductRequest;
+use Response;
+use DB;
+//use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -34,7 +35,8 @@ class ProductController extends Controller
         $header_text = 'เพิ่มข้อมูลสินค้า';
         $mode = 'create';
         $form_action = '/product';
-        return view('product.form', compact('product', 'header_text', 'mode', 'form_action'));
+        $categoryList = Category::pluck('name', 'id')->toArray();
+        return view('product.form', compact('product', 'header_text', 'mode', 'form_action', 'categoryList'));
     }
 
     /**
@@ -43,37 +45,56 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
-        //dd($request->all());
+        $status = 200;
+        $msgerror = "";
+
+        $p = $request->input('product');
+        $pis = $request->input('product_image');
+
         DB::beginTransaction();
         try{
-
-            $p = Product::create([
-                'category_id' => $request->input('category_id'),
-                'code' => $this->GeraHash(15),
-                'name' => $request->input('name'),
-                'price' => $request->input('price'),
-                'balance' => $request->input('balance'),
-                'detail' => $request->input('detail')
+            $rsp = Product::create([
+                'category_id' => $p['category_id'],
+                'code' => $this->GeraHash(10),
+                'name' => $p['name'],
+                'price' => $p['price'],
+                'balance' => $p['balance'],
+                'detail' => $p['detail']
                 ]);
-
-            $i=1;
-            foreach ($request->images as $image) {
+            if(count($pis)){
+                $i=1;
+                foreach ($pis as $pi) {
                 //$filename = $image->store('public');
-                $filename = Storage::put('public', $image);
-                $pi = ProductImage::create([
-                    'product_id' => $p->id,
-                    'filename' => $image->hashName(),
-                    'sort' => $i
-                    ]);
-                $i++;
+                // $filename = Storage::put('public', $image);
+                    $statusdefault = false;
+                    if($i==1){
+                        $statusdefault = true;
+                    }
+                    $rspi = ProductImage::create([
+                        'product_id' => $rsp->id,
+                        'fileupload_id' => $pi['fileupload_id'],
+                        'sort' => $i,
+                        'statusdefault' => $statusdefault
+                        ]);
+                    $i++;
+                }
             }
         } catch (\Exception $ex) {
             DB::rollback();
+            $status = 500;
+            $msgerror = $ex->getMessage();
         }
         DB::commit();
-        return redirect('product');
+        if ($msgerror == "") {
+            $msgerror = 'บันทึกข้อมูลเรียบร้อย';
+        }
+        $data = ['status' => $status, 'msgerror' => $msgerror, 'rsp' => $rsp];
+        return Response::json($data);
+
+        // $data = $p['category_id'] ;//['status' => $p['category_id']];
+        // return Response::json($data);
     }
 
     /**
@@ -98,7 +119,8 @@ class ProductController extends Controller
         $header_text = 'แก้ไขข้อมูลสินค้า';
         $mode = 'edit';
         $form_action = '/product/'.$product->id;
-        return view('product.form', compact('product', 'header_text', 'mode', 'form_action'));
+        $categoryList = Category::pluck('name', 'id')->toArray();
+        return view('product.form', compact('product', 'header_text', 'mode', 'form_action', 'categoryList'));
     }
 
     /**
@@ -110,7 +132,54 @@ class ProductController extends Controller
      */
     public function update(Request $request, product $product)
     {
-        //
+        $status = 200;
+        $msgerror = "";
+
+        $p = $request->input('product');
+        $pis = $request->input('product_image');
+
+        DB::beginTransaction();
+        try{
+            $rsp = $product->category_id = $p['category_id'];
+            $product->name = $p['name'];
+            $product->price = $p['price'];
+            $product->balance = $p['balance'];
+            $product->detail = $p['detail'];
+            $product->save();
+
+            $d = ProductImage::where('product_id', $product->id)->delete();
+            if($pis){
+                $i=1;
+                foreach ($pis as $pi) {
+                //$filename = $image->store('public');
+                // $filename = Storage::put('public', $image);
+                    $statusdefault = false;
+                    if($i==1){
+                        $statusdefault = true;
+                    }
+                    $rspi = ProductImage::create([
+                        'product_id' => $product->id,
+                        'fileupload_id' => $pi['fileupload_id'],
+                        'sort' => $i,
+                        'statusdefault' => $statusdefault
+                        ]);
+                    $i++;
+                }
+            }
+        } catch (\Exception $ex) {
+            DB::rollback();
+            $status = 500;
+            $msgerror = $ex->getMessage();
+        }
+        DB::commit();
+        if ($msgerror == "") {
+            $msgerror = 'บันทึกข้อมูลเรียบร้อย';
+        }
+        $data = ['status' => $status, 'msgerror' => $msgerror, 'd' => $d, 'pis' => $pis, 'rsp' => $rsp];
+        return Response::json($data);
+
+        // $data = $product;
+        // return Response::json($data);
     }
 
     /**

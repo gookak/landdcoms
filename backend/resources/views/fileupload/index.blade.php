@@ -4,7 +4,7 @@
 
 <div class="page-header">
     <h1>
-        อัพโหลดไฟล์
+        อัพโหลดรูปสินค้า
         {{-- <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             Static &amp; Dynamic Tables
@@ -32,12 +32,18 @@
         </div>
     </div>
     @if ($fileuploads)
-    <ul class="ace-thumbnails clearfix">
+    <ul id="show-image" class="ace-thumbnails clearfix">
         @foreach ($fileuploads as $fileupload)
         <li>
-            <a data-rel="colorbox" class="cboxElement">
-                <img width="150" height="150" alt="150x150" src="{{ asset('storage/' . $fileupload->filename )}}">
+            <a href="{{ asset('uploads/products/' . $fileupload->filename )}}" data-rel="colorbox" class="cboxElement">
+                <img width="150" height="150" alt="150x150" src="{{ asset('uploads/products/' . $fileupload->filename )}}">
+                <div class="text">
+                    <div class="inner">Zoom</div>
+                </div>
             </a>
+            <div class="tools tools-bottom">
+                <a class="btn-del" data-id="{{ $fileupload->id }}"><i class="ace-icon fa fa-times red"></i></a>
+            </div>
         </li>
         @endforeach
     </ul>
@@ -52,40 +58,65 @@
 <script type="text/javascript">
     $(function () {
 
+        //delete
+        $(".btn-del").click(function () {
+            var r = confirm("คุณต้องการลบรายการที่เลือก");
+            if (r === true) {
+                var id = $(this).data("id");
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:'/fileupload/' + id, 
+                    type: 'POST'
+                }).done(function(result) {
+                    //console.log(result);
+                    if (result.status === 200) {
+                        location.reload(true);
+                    }else {
+                        showMsgError("#msgErrorArea", result.msgerror);
+                    }
+                }).fail(function () {
+                    showMsgError("#msgErrorArea", "ส่งข้อมูล AJAX ผิดพลาด");
+                });
+            }
+        });
+        //end delete
 
-        // //colorbox
-        // var $overflow = '';
-        // var colorbox_params = {
-        //     rel: 'colorbox',
-        //     reposition:true,
-        //     scalePhotos:true,
-        //     scrolling:false,
-        //     previous:'<i class="ace-icon fa fa-arrow-left"></i>',
-        //     next:'<i class="ace-icon fa fa-arrow-right"></i>',
-        //     close:'&times;',
-        //     current:'{current} of {total}',
-        //     maxWidth:'100%',
-        //     maxHeight:'100%',
-        //     onOpen:function(){
-        //         $overflow = document.body.style.overflow;
-        //         document.body.style.overflow = 'hidden';
-        //     },
-        //     onClosed:function(){
-        //         document.body.style.overflow = $overflow;
-        //     },
-        //     onComplete:function(){
-        //         $.colorbox.resize();
-        //     }
-        // };
 
-        // $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+        //colorbox
+        var $overflow = '';
+        var colorbox_params = {
+            rel: 'colorbox',
+            reposition:true,
+            scalePhotos:true,
+            scrolling:false,
+            previous:'<i class="ace-icon fa fa-arrow-left"></i>',
+            next:'<i class="ace-icon fa fa-arrow-right"></i>',
+            close:'&times;',
+            current:'{current} of {total}',
+            maxWidth:'100%',
+            maxHeight:'100%',
+            onOpen:function(){
+                $overflow = document.body.style.overflow;
+                document.body.style.overflow = 'hidden';
+            },
+            onClosed:function(){
+                document.body.style.overflow = $overflow;
+            },
+            onComplete:function(){
+                $.colorbox.resize();
+            }
+        };
 
-        // $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
+        $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
 
-        // $(document).one('ajaxloadstart.page', function(e) {
-        //     $('#colorbox, #cboxOverlay').remove();
-        // });
-        // //end colorbox
+        $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('#colorbox, #cboxOverlay').remove();
+        });
+        //end colorbox
 
     });
 </script>

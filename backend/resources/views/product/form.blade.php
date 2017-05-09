@@ -22,15 +22,15 @@
             </div>
         </div>
 
-        <form id="productForm" class="form-horizontal" role="form" action="{{ $form_action }}" method="POST" enctype="multipart/form-data">
-            {{ csrf_field() }}
+        <form id="productForm" class="form-horizontal" role="form" action="{{ $form_action }}" method="POST">
+            {{-- {{ csrf_field() }} --}}
 
             {{ $mode=='edit'? method_field('PUT') : null }}
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">ประเภทสินค้า</label>
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" name="category_id" placeholder="" value="{{ $product->category_id }}" />
+                    {{ Form::select('category_id', ['' => 'กรุณาเลือก'] + $categoryList, $product->category_id, array('class' => 'form-control')) }}
                 </div>
             </div>
 
@@ -62,47 +62,53 @@
                 </div>
             </div>
 
-            {{-- <h4 class="header blue bolder smaller">รูปสินค้า</h4> --}}
+            <div class="form-group">
+                <label class="col-sm-2 control-label">รูปภาพ</label>
+                <div class="col-sm-5">
+                    <button type="button" class="btn btn-primary btn-sm fa fa-plus fa-x" data-toggle="modal" data-target="#modal-add-image"> เพิ่มรูป</button>
 
-            @if ($mode=='create')
-            <div class="form-group">
-                <label class="col-sm-2 control-label">รูปภาพ</label>
-                <div class="col-sm-5">
-                    <input id="id-input-file-3" type="file" class="form-control" name="images[]" multiple/>
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal-add-image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">เพิ่มรูป</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <ul id="model-ul-image" class="ace-thumbnails clearfix">
+                                        {{-- <li>
+                                            <img width="150" height="150" alt="150x150" src="">
+                                        </li> --}}
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Modal -->
                 </div>
             </div>
-            @elseif ($mode=='edit')
+
             <div class="form-group">
-                <label class="col-sm-2 control-label">รูปภาพ</label>
-                <div class="col-sm-5">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-5 col-xs-offset-2">
+                <div class="col-sm-6 col-sm-offset-2">
                     @if ( $product->productImage )
-                    <table class="table  table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>ไฟล์</th>
-                                <th>เรียง</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($product->productImage as $productImage)
-                            <tr>
-                                <td>
-                                    <img width="80" height="80" alt="150x150" src="{{ asset('storage/' . $productImage->filename )}}">
-                                </td>
-                                <td>{{ $productImage->sort }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <ul id="ul-image" class="ace-thumbnails clearfix">
+                        @foreach($product->productImage as $productImage)
+                        <li data-fileid="{{ $productImage->fileupload->id }}">
+                            <img width="150" height="150" alt="150x150" src="{{ asset('uploads/products/' . $productImage->fileupload->filename )}}">
+                            <div class="tools tools-bottom">
+                                <a class="a-del"><i class="ace-icon fa fa-times red"></i></a>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
                     @endif
                 </div>
             </div>
-            @endif
-
 
             <div class="form-group clearfix form-actions">
                 <div class="col-sm-5 col-xs-offset-2">
@@ -128,37 +134,42 @@
 <script type="text/javascript">
     $(function () {
 
-        $('#id-input-file-3').ace_file_input({
-            style: 'well',
-            btn_choose: 'Drop files here or click to choose',
-            btn_change: null,
-            no_icon: 'ace-icon fa fa-cloud-upload',
-            droppable: true,
-            thumbnail: 'small'
-            //large | fit
-            //,icon_remove:null//set null, to hide remove/reset button
-            /**,before_change:function(files, dropped) {
-                //Check an example below
-                //or examples/file-upload.html
-                return true;
-            }*/
-            /**,before_remove : function() {
-                return true;
-            }*/
-            ,
-            preview_error : function(filename, error_code) {
-                // name of the file that failed
-                // error_code values
-                // 1 = 'FILE_LOAD_FAILED',
-                // 2 = 'IMAGE_LOAD_FAILED',
-                // 3 = 'THUMBNAIL_FAILED'
-                // alert(error_code);
-            }
-
-        }).on('change', function(){
-            // console.log($(this).data('ace_input_files'));
-            // console.log($(this).data('ace_input_method'));
+        // Delete image
+        $(document).on("click", ".a-del", function () {
+            //console.log($(this).parent().parent());
+            $(this).parent().parent().remove();
         });
+
+        // Add Image
+        $(document).on("click", "#model-ul-image li", function () {
+            //console.log($(this).data('fileid'));
+            //console.log($(this).html());
+            var st = '<li data-fileid="'+ $(this).data('fileid') +'">'
+            + $(this).html()
+            + '<div class="tools tools-bottom"><a class="a-del"><i class="ace-icon fa fa-times red"></i></a></div></li>';
+            // console.log(st);
+            $('#ul-image').append(st);
+
+            //$('#modal-add-image').modal('hide');
+        });
+
+        // Bootstrap Modal
+        $('#modal-add-image').on('show.bs.modal', function (e) {
+            $('#model-ul-image').html('');
+            $.ajax({
+                url: '/apigetfileupload',
+                type: 'GET',
+            }).done(function(result) {
+                //console.log(result);
+                if (result.status === 200) {
+                    $.each( result.rs, function( key, value ) {
+                        //console.log( value.id + " : " + value.url );
+                        $('#model-ul-image').append('<li data-fileid="'+ value.id +'"><img width="150" height="150" alt="150x150" src="'+value.url+'"></li>');
+                    });
+                }
+            });
+        });
+        // End Bootstrap Modal
 
 
         $('#productForm').bootstrapValidator({
@@ -185,35 +196,69 @@
                     }
                 }
             }
-        });
-        // .on("success.form.bv", function (e) {
-        //     // Prevent form submission
-        //     e.preventDefault();
-        //     // Get the form instance
-        //     var $form = $(e.target);
-        //     // console.log($form);
-        //     // console.log($form.attr('action'));
-        //     // console.log($form.serialize());
+        }).on("success.form.bv", function (e) {
+            // Prevent form submission
+            e.preventDefault();
+            // Get the form instance
+            var $form = $(e.target);
+            // console.log($form);
+            // console.log($form.attr('action'));
+            // console.log($form.serializeArray());
 
-        //     $.ajax({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         url: $form.attr('action'), 
-        //         type: 'POST',
-        //         data: $form.serialize(),
-        //     })
-        //     .done(function(result) {
-        //         console.log(result);
-        //         if (result.status === 200) {
-        //             window.location = "/product";
-        //         }else {
-        //             showMsgError("#msgErrorArea", result.msgerror);
-        //         }
-        //     }).fail(function () {
-        //         showMsgError("#msgErrorArea", "ส่งข้อมูล AJAX ผิดพลาด");
-        //     });
-        // });
+            //var p = JSON.stringify($form.serializeObject());
+            // console.log(p);
+
+            // var formdata = $form.serializeObject();
+            // var p = {};
+            // $(formdata).each(function(index, obj){
+            //     console.log(obj.name + " : "+ obj.value);
+            //     //p[obj.name] = obj.value;
+
+            // });
+            
+            var p = {};
+            var formdata = $form.serializeArray();
+            $.each(formdata, function(i, field){
+                //console.log(field.name + ":" + field.value + " ");
+                p[field.name] = field.value;
+            });
+
+            var pi = [];
+            $("#ul-image li").each(function () {
+                pi.push({
+                    fileupload_id: $(this).data('fileid')
+                });
+            });
+
+            var alldata = {};
+            var mode = "{{ $mode=='edit'? 'edit' : null }}";
+            if(mode=='edit') {
+                alldata['_method'] = 'PUT';
+            }
+            alldata['product'] = p;
+            alldata['product_image'] = pi;
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: $form.attr('action'), 
+                type: 'POST',
+                data: alldata,
+                dataType: 'JSON',
+            })
+            .done(function(result) {
+                //console.log(result);
+                if (result.status === 200) {
+                    window.location = "/product";
+                }else {
+                    showMsgError("#msgErrorArea", result.msgerror);
+                }
+            }).fail(function () {
+                showMsgError("#msgErrorArea", "ส่งข้อมูล AJAX ผิดพลาด");
+            });
+
+        });
 
     });
 </script>
