@@ -15,9 +15,9 @@ class CreateOrderTable extends Migration
     {
         Schema::create('order', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('customer_id');
-            $table->integer('address_id');
-            $table->integer('transportstatus_id');
+            $table->integer('customer_id');//->unsigned();
+            $table->integer('address_id');//->unsigned();
+            $table->integer('transportstatus_id');//->unsigned();
             $table->string('code', 10)->comment('เลขที่ใบสั่งซื้อ');
             $table->integer('sumnumber')->nullable()->comment('รวมจำนวนสินค้าทั้งหมด');
             $table->decimal('sumprice', 10, 2)->nullable()->comment('รวมราคาสินค้าทั้งหมด');
@@ -27,6 +27,12 @@ class CreateOrderTable extends Migration
             $table->string('emscode', 100)->nullable()->comment('รหัสพัสดุ');
             $table->timestamps();
         });
+
+        // Schema::table('order', function($table) {
+        //     $table->foreign('customer_id')->references('id')->on('customer'); 
+        //     $table->foreign('address_id')->references('id')->on('address');
+        //     $table->foreign('transportstatus_id')->references('id')->on('transportstatus'); 
+        // });
     }
 
     /**
