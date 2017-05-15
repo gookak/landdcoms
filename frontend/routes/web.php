@@ -24,13 +24,14 @@ Route::get('/product', 'ProductController@index');
 
 Route::get('/productDetail/{id}', 'ProductController@productDetail');
 
+Route::get('/cart', 'CartController@showCart');
 Route::get('/cart/addProduct/{productId}', 'CartController@addItem');
 Route::get('/cart/plusProduct/{productId}', 'CartController@plusByOne');
 Route::get('/cart/reduceProduct/{productId}', 'CartController@reduceByOne');
 Route::get('/cart/removeItem/{productId}', 'CartController@removeItem');
-Route::get('/cart', 'CartController@showCart');
 
 
+Route::get('/checkout', 'CheckoutController@index');
 // Route::get('/', function () {
 //     return view('home');
 // });
