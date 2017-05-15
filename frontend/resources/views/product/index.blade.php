@@ -106,7 +106,7 @@
                 <div class="col-md-3 col-sm-6">
                     <div class="single-shop-product">
                         <div class="product-upper">
-                            <img src="{{ asset(env('FILE_URL').)}}" alt="">
+                            <img src="{{ asset(env('FILE_URL')."")}}" alt="">
                         </div>
                         <h2><a href="/productDetail/{{$product->id}}">{{ $product->name }}</a></h2>
                         <div class="product-carousel-price">

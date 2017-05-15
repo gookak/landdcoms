@@ -53,9 +53,10 @@ class ProductController extends Controller
             $tbl_product = $tbl_product->orderBy('price','asc');
         }
 
-        // $category_list = Category::all();
         $category_current = Category::find($categoryId);
         $products = $tbl_product->paginate(2);
+
+        // dd($products);
 
         return view('product.index',compact('products','category_list','category_current','maxprice','minprice'));
     }

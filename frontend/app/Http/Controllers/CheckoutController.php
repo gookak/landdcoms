@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Cookie\CookieJar;
 use App\Http\Requests;
 use DB;
+use Session;
 
 class CheckoutController extends Controller
 {
@@ -20,6 +21,11 @@ class CheckoutController extends Controller
     }
 
     public function index(){
-        return view('checkout.index');
+
+    	$oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        $products = $cart->items;
+
+        return view('checkout.index',['products' => $cart->items, 'totalQty'=>$cart->totalQty, 'totalPrice'=>$cart->totalPrice]);
     }
 }
