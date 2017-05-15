@@ -11,6 +11,6 @@ class ProductImage extends Model
 	}
 
 	public function fileupload() {
-		return $this->belongsTo(Fileupload::class);
+		return $this->hasMany(Fileupload::class);
 	}
 }

@@ -16,7 +16,7 @@ class CreateProductTable extends Migration
         Schema::create('product', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('category_id');
-            $table->string('code', 20)->comment('รหัสสินค้า (2017000001)');
+            $table->string('code', 10)->comment('รหัสสินค้า (2017000001)');
             $table->string('name', 200)->comment('ชื่อ');
             // $table->string('image', 200)->nullable()->comment('รูปที่ใช้แสดง');
             $table->decimal('price', 10, 2)->comment('ราคา');

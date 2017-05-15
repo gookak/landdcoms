@@ -135,17 +135,17 @@
           <b class="arrow"></b>
         </li>
         <li class="">
-          <a href="/fileupload">
+          <a href="/product">
             <i class="menu-icon fa fa-tachometer"></i>
-            <span class="menu-text"> อัพโหลดรูปสินค้า </span>
+            <span class="menu-text"> ข้อมูลสินค้า </span>
           </a>
 
           <b class="arrow"></b>
         </li>
         <li class="">
-          <a href="/product">
+          <a href="/fileupload">
             <i class="menu-icon fa fa-tachometer"></i>
-            <span class="menu-text"> ข้อมูลสินค้า </span>
+            <span class="menu-text"> อัพโหลดไฟล์ </span>
           </a>
 
           <b class="arrow"></b>

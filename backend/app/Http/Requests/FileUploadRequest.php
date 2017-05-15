@@ -13,7 +13,7 @@ class FileUploadRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -29,7 +29,7 @@ class FileUploadRequest extends FormRequest
 
         $images = count($this->input('images'));
         foreach(range(0, $images) as $index) {
-            $rules['images.' . $index] = 'image|mimes:jpeg,bmp,png|max:2000|required';
+            $rules['images.' . $index] = 'image|mimes:jpeg,bmp,png|max:2000';
         }
         return $rules;
     }
