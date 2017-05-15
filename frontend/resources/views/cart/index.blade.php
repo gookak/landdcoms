@@ -71,7 +71,7 @@
                 </div>
             </div> --}}
 
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="product-content-right">
                     <div class="woocommerce">
                         <form method="post" class="shop_form" action="#">
@@ -96,7 +96,7 @@
                                         </td>
 
                                         <td class="product-thumbnail">
-                                            <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="img/product-thumb-2.jpg"></a>
+                                            <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="{{ asset('themes/ustora/img/product-thumb-2.jpg') }}"></a>
                                         </td>
 
                                         <td class="product-name">
@@ -110,7 +110,7 @@
                                         <td class="product-quantity">
                                             <div class="quantity buttons_added">
                                                 <button type="button" class="btn btn-xs btn-primary minusItem" data-productid="{{$product['item']['id']}}"><i class="fa fa-minus"></i></button> 
-                                                <input type="text" readonly size="2" class="input-text qty text" title="Qty" value="{{$product['qty']}}">
+                                                <input type="text" readonly size="1" class="input-text qty text" title="Qty" value="{{$product['qty']}}">
                                                 <button type="button" class="btn btn-xs btn-primary plusItem" data-productid="{{$product['item']['id']}}"><i class="fa fa-plus"></i></button> 
                                             </div>
                                         </td>
@@ -134,34 +134,6 @@
                         </form>
 
                         <div class="cart-collaterals">
-
-
-                            {{-- <div class="cross-sells">
-                                <h2>You may be interested in...</h2>
-                                <ul class="products">
-                                    <li class="product">
-                                        <a href="single-product.html">
-                                            <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="img/product-2.jpg">
-                                            <h3>Ship Your Idea</h3>
-                                            <span class="price"><span class="amount">£20.00</span></span>
-                                        </a>
-
-                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
-                                    </li>
-
-                                    <li class="product">
-                                        <a href="single-product.html">
-                                            <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="img/product-4.jpg">
-                                            <h3>Ship Your Idea</h3>
-                                            <span class="price"><span class="amount">£20.00</span></span>
-                                        </a>
-
-                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
-                                    </li>
-                                </ul>
-                            </div> --}}
-
-
                             <div class="cart_totals">
                                 <div class="shop_total">
                                     <h2>Cart Totals</h2>
@@ -169,26 +141,22 @@
                                     <table cellspacing="0">
                                         <tbody>
                                             <tr class="cart-subtotal">
-                                                <th>Cart Subtotal</th>
-                                                <td><span class="amount">{{$totalPrice}}</span></td>
-                                            </tr>
-
-                                            <tr class="shipping">
-                                                <th>Shipping and Handling</th>
-                                                <td>Free Shipping</td>
-                                            </tr>
-
-                                            <tr class="order-total">
                                                 <th>Order Total</th>
+                                                <td><span class="amount">{{$totalQty}}</span></td>
+                                            </tr>
+                                            <tr class="order-total">
+                                                <th>Total Price</th>
                                                 <td><strong><span class="amount">{{$totalPrice}}</span></strong> </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-
-
-                            <form method="post" action="#" class="shipping_calculator">
+                            <div class="text-center">
+                                <h2><a href="/checkout" name="checkout" class="btn btn-primary">Check out</a></h2>
+                            </div>
+                                
+                           {{--  <form method="post" action="#" class="shipping_calculator">
                                 <h2><a class="shipping-calculator-button" data-toggle="collapse" href="#calcalute-shipping-wrap" aria-expanded="false" aria-controls="calcalute-shipping-wrap">Calculate Shipping</a></h2>
 
                                 <section id="calcalute-shipping-wrap" class="shipping-calculator-form collapse">
@@ -451,7 +419,7 @@
                                     <p><button class="button" value="1" name="calc_shipping" type="submit">Update Totals</button></p>
 
                                 </section>
-                            </form>
+                            </form> --}}
 
 
                         </div>

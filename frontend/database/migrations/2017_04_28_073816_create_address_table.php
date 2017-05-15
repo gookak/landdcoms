@@ -15,12 +15,16 @@ class CreateAddressTable extends Migration
     {
         Schema::create('address', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('customer_id');
+            $table->integer('customer_id')->unsigned();
             $table->string('fullname', 200)->comment('ชื่อในการจัดส่ง');
             $table->text('detail')->comment('รายละเอียด');
             $table->string('postcode', 10)->comment('รหัสไปรษณีย์');
             $table->string('tel', 100)->nullable()->comment('เบอร์ติดต่อ');           
             $table->timestamps();
+        });
+
+        Schema::table('address', function($table) {
+            $table->foreign('customer_id')->references('id')->on('customer'); 
         });
     }
 
