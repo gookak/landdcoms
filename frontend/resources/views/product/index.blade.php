@@ -29,6 +29,7 @@
                         Search Products
                     </div>
                     <form id="search" action="/product" class="search-collapse collapse" method="GET">
+                        {{-- {{ csrf_field() }} --}}
                         <p class="form-row">
                             <label for="name">ชื่อสินค้า</label>
                             <input type="text" id="name" name="name" class="input-text form-control" placeholder="Name products..." value="{{Request::input('name')? Request::input('name') : null}}">  
@@ -97,34 +98,30 @@
                         </div>
                     </div>
                 </div>
-                </br>
-                <div class="row product">
-                    <div class="productlist">
-                    @if ($products->count())
-                        @foreach($products as $product)
-                            <div class="col-md-3 col-sm-6">
-                                <div class="single-shop-product">
-                                    <div class="product-upper">
-                                        <img src="{{ asset(env('FILE_URL').)}}" alt="">
-                                    </div>
-                                    <h2><a href="/productDetail/{{$product->id}}">{{ $product->name }}</a></h2>
-                                    <div class="product-carousel-price">
-                                        {{ $product->price }}
-                                    </div>  
-
-                                    <div class="product-option-shop">
-                                        <button class="add_to_cart_button add_item_cart" data-productid="{{$product->id}}"><i class="fa fa-shopping-cart"></i> Add to cart</button>
-                                    </div>                       
+               
+                @if ($products->count())
+                    @foreach($products as $product)
+                        <div class="col-md-3 col-sm-6">
+                            <div class="single-shop-product">
+                                <div class="product-upper">
+                                    <img src="{{ asset('themes/ustora/img/product-2.jpg') }}" alt="">
                                 </div>
+                                <h2><a href="/productDetail/{{$product->id}}">{{ $product->name }}</a></h2>
+                                <div class="product-carousel-price">
+                                    {{ $product->price }}
+                                </div>  
+
+                                <div class="product-option-shop">
+                                    <button class="add_to_cart_button add_item_cart" data-productid="{{$product->id}}"><i class="fa fa-shopping-cart"></i> Add to cart</button>
+                                </div>                       
                             </div>
-                        @endforeach
-                    @else
-                        <div class="col-md-12">
-                            <h2>ไม่พบข้อมูล</h2>                  
-                        </div>       
-                    @endif
-                    </div>
-                </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="col-md-12">
+                        <h2>ไม่พบข้อมูล</h2>                  
+                    </div>       
+                @endif
             </div>
         </div>
 
@@ -198,7 +195,7 @@
 
 
         $("#sortby").change(function(){
-            $("form[name=sortby]").submit();
+            $("form[name=sortby]").submit()
         });
 
         $(".add_item_cart").click(function(){
@@ -207,6 +204,7 @@
             $.get("/cart/addProduct/"+productId,function(data){
                 $(".cart-reload").load("/product .shopping-item");
             });
+
         });
     });
 </script>

@@ -91,7 +91,7 @@ class CartController extends Controller
         $cart = new Cart($oldCart);
         $products = $cart->items;
 
-        return view('cart.index',['products' => $cart->items, 'totalQty'=>$cart->totalQty, 'totalPrice'=>$cart->totalPrice]);
+        return view('cart.index',['products' => $cart->items, 'totalPrice'=>$cart->totalPrice]);
     }
 
     public function removeItem($productId) {
