@@ -15,13 +15,18 @@ class CreateProductImageTable extends Migration
     {
         Schema::create('product_image', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('product_id');
-            $table->integer('fileupload_id');
+            $table->integer('product_id')->unsigned();
+            $table->integer('fileupload_id')->unsigned();
             //$table->string('filename', 100)->comment('ชื่อไฟล์');
             // $table->string('filetype', 50)->comment('นามสกุล');
             $table->integer('sort')->comment('เรียง');
             $table->boolean('statusdefault', 200)->default(false)->comment('ตั้งค่าเป็น defualt');
             $table->timestamps();
+        });
+
+        Schema::table('product_image', function($table) {
+            $table->foreign('product_id')->references('id')->on('product');
+            $table->foreign('fileupload_id')->references('id')->on('fileupload');
         });
     }
 
