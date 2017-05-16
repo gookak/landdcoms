@@ -55,7 +55,11 @@
                             </div>
                         </td>                        
                         <td>{{ $product->code }}</td>
-                        <td>{{ $product->image }}</td>
+                        <td>
+                            @if(count($product->productImage) > 0)
+                            <img width="80" height="80" alt="150x150" src="{{ asset(env('FILE_URL').$product->productImage[0]->fileupload->filename )}}">
+                            @endif
+                        </td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->balance }}</td>
@@ -110,7 +114,7 @@
                     data: { '_method': 'delete'},
                 })
                 .done(function(result) {
-                    console.log(result);
+                    // console.log(result);
                     if (result.status === 200) {
                         location.reload(true);
                     }else {
