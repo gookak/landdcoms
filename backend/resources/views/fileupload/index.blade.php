@@ -4,7 +4,7 @@
 
 <div class="page-header">
     <h1>
-        อัพโหลดรูปสินค้า
+        อัพโหลดไฟล์
         {{-- <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             Static &amp; Dynamic Tables
@@ -17,39 +17,48 @@
         <!-- PAGE CONTENT BEGINS -->
         <div class="clearfix">
             <div id="msgErrorArea">
-                @include('layouts.errors')
+                @if (count($errors) > 0)
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                @endif
             </div>
         </div>
 
         <div class="clearfix">
             <div class="pull-left tableTools-container">
-                <form class="form-inline" role="form" action="/fileupload" method="POST" enctype="multipart/form-data">
+                <form class="form-horizontal" role="form" action="/fileupload" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    <input type="file" class="form-control" name="images[]" multiple placeholder=""/>
-                </div>
-                <button type="submit" class="btn btn-sm btn-primary">Upload</button>
-            </form>
-        </div>
-    </div>
-    @if ($fileuploads)
-    <ul id="show-image" class="ace-thumbnails clearfix">
-        @foreach ($fileuploads as $fileupload)
-        <li>
-            <a href="{{ asset(env('FILE_URL').$fileupload->filename )}}" data-rel="colorbox" class="cboxElement">
-                <img width="150" height="150" alt="150x150" src="{{ asset(env('FILE_URL').$fileupload->filename )}}">
-                <div class="text">
-                    <div class="inner">Zoom</div>
-                </div>
-            </a>
-            <div class="tools tools-bottom">
-                <a class="btn-del" data-id="{{ $fileupload->id }}"><i class="ace-icon fa fa-times red"></i></a>
+                    <input type="file" class="form-control" name="images[]" multiple/>
+                    <input type="submit" value="Upload" />
+                </form>
             </div>
-        </li>
-        @endforeach
-    </ul>
-    @endif
-    <!-- PAGE CONTENT ENDS -->
-</div><!-- /.col -->
+        </div>
+
+        <ul class="ace-thumbnails clearfix">
+            <li>
+                <a href="assets/images/gallery/image-2.jpg" data-rel="colorbox">
+                    <img width="150" height="150" alt="150x150" src="assets/images/gallery/thumb-2.jpg" />
+                    <div class="text">
+                        <div class="inner">Sample Caption on Hover</div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="assets/images/gallery/image-2.jpg" data-rel="colorbox">
+                    <img width="150" height="150" alt="150x150" src="assets/images/gallery/thumb-2.jpg" />
+                    <div class="text">
+                        <div class="inner">Sample Caption on Hover</div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+
+
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
 </div><!-- /.row -->
 
 
@@ -58,33 +67,6 @@
 <script type="text/javascript">
     $(function () {
 
-        //delete
-        $(".btn-del").click(function () {
-            var r = confirm("คุณต้องการลบรายการที่เลือก");
-            if (r === true) {
-                var id = $(this).data("id");
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url:'/fileupload/' + id, 
-                    type: 'POST'
-                }).done(function(result) {
-                    //console.log(result);
-                    if (result.status === 200) {
-                        location.reload(true);
-                    }else {
-                        showMsgError("#msgErrorArea", result.msgerror);
-                    }
-                }).fail(function () {
-                    showMsgError("#msgErrorArea", "ส่งข้อมูล AJAX ผิดพลาด");
-                });
-            }
-        });
-        //end delete
-
-
-        //colorbox
         var $overflow = '';
         var colorbox_params = {
             rel: 'colorbox',
@@ -116,7 +98,6 @@
         $(document).one('ajaxloadstart.page', function(e) {
             $('#colorbox, #cboxOverlay').remove();
         });
-        //end colorbox
 
     });
 </script>
