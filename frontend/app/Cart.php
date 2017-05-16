@@ -26,8 +26,8 @@ class Cart
 		$storedItem['qty'] += $qty ;
         $storedItem['price'] = $item->price * $storedItem['qty'];
         $this->items[$id] = $storedItem;
-        $this->totalQty++;
-        $this->totalPrice += $item->price;
+        $this->totalQty += $qty;
+        $this->totalPrice += $item->price * $qty;
 	}
 
 	public function reduceByOne($id) {

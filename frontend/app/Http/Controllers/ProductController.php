@@ -28,7 +28,7 @@ class ProductController extends Controller
         $category = Category::find($request->input('category_id'));
         $tbl_product = DB::table('product');
 
-        $maxprice = Product::where('category_id', $categoryId)->max('price');
+        $maxprice = Product::max('price');
         // $minprice = Product::where('category_id', $categoryId)->min('price');
 
         if ($name) {
@@ -53,32 +53,22 @@ class ProductController extends Controller
             $tbl_product = $tbl_product->orderBy('price','asc');
         }
 
-        $category_list = Category::all();
         $category_current = Category::find($categoryId);
         $products = $tbl_product->paginate(2);
+
+        // dd($products);
 
         return view('product.index',compact('products','category_list','category_current','maxprice','minprice'));
     }
 
-    // public function searchCategory($id)
-    // {
-    //     $categorys = Category::all();
-    //     $products = Product::where('category_id', 'like', $id)->orderBy('created_at','desc')->paginate(2);
-    //     return view('product.index',compact('products','categorys'));
-    // }
-
-    // public function search(Request $request)
-    // {
-    //     $search = \Request::get('search');
-    //     $categorys = Category::all();
-    //     $products = Product::where('name', 'like', '%' . $search . '%')->orderBy('createdate','desc')->paginate(2);
-    //     return view('product.index',compact('products','categorys'));
-    // }
 
     public function productDetail($id)
     {
-    	$product = Product::find($id);        
-    	return view('product.detail',compact('product'));
+
+        $product = Product::find($id); 
+        $category_list = Category::all();
+        $maxprice = Product::max('price');       
+        return view('product.detail',compact('product','category_list','maxprice'));
     }
 
 }

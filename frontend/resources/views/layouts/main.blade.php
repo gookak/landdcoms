@@ -130,9 +130,11 @@
                 </div>
                 
                 <div class="col-sm-6 cart-reload">
+                @if(Session::has('cart'))
                     <div class="shopping-item">
                         <a href="/cart">Cart - <span class="cart-amunt">{{Session::has('cart') ? Session::get('cart')->totalPrice : '' }}</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">{{Session::has('cart') ? Session::get('cart')->totalQty : '' }}</span></a>
                     </div>
+                @endif
                 </div>
             </div>
         </div>
